@@ -1,6 +1,5 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-const User = require('./models/User');
 const Question = require('./models/Question');
 const Business = require('./models/Business');
 
@@ -154,7 +153,7 @@ const questions = [
     questionText: 'When a business has succeeded in its core market and is considering geographic expansion, adding new product lines, or entering adjacent customer segments, how do you evaluate which growth path offers the best return on investment and strategic positioning? Walk through the framework for assessing growth options including market size and accessibility, competitive intensity, operational complexity and capital requirements, the degree to which existing capabilities transfer, and how each option affects the core business. Include how to design and run a low-cost experiment to test the expansion hypothesis before full commitment, what metrics tell you the expansion is working versus failing, and when to double down versus pivot to a different growth vector.',
     example: 'A profitable regional restaurant chain with 6 locations is evaluating opening locations in two new cities, launching a catering service line, and introducing a meal kit delivery product simultaneously.',
     category: 'manage',
-    tierAccess: 'members',
+    tierAccess: 'free',
     questionNumber: 18
   },
   {
@@ -215,33 +214,28 @@ const questions = [
   }
 ];
 
+async function seedContent() {
+    for (const business of businesses) {
+      await Business.updateOne({ title: business.title }, { $setOnInsert: business }, { upsert: true });
+    }
+
+    for (const question of questions) {
+      await Question.updateOne({ questionNumber: question.questionNumber }, { $setOnInsert: question }, { upsert: true });
+    }
+    const freeGrowthQuestion = questions.find((question) => question.businessTitle === 'Business Growth' && question.tierAccess === 'free');
+    if (freeGrowthQuestion) {
+      await Question.updateOne(
+        { businessTitle: freeGrowthQuestion.businessTitle, questionNumber: freeGrowthQuestion.questionNumber },
+        { $set: { tierAccess: 'free' } }
+      );
+    }
+    console.log(`Ensured ${businesses.length} businesses and ${questions.length} questions`);
+}
+
 async function seed() {
   try {
     await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/knoukno');
-    console.log('Connected to MongoDB');
-
-    await User.deleteMany({});
-    await Question.deleteMany({});
-    await Business.deleteMany({});
-    console.log('Cleared existing data');
-
-    const admin = new User({
-      name: 'Admin',
-      email: 'admin@knoukno.com',
-      password: 'Admin123!',
-      role: 'admin',
-      tier: 'pro'
-    });
-    await admin.save();
-    console.log('Admin created: admin@knoukno.com / Admin123!');
-
-    await Business.insertMany(businesses);
-    console.log('Businesses seeded');
-
-    for (const q of questions) {
-      await Question.create(q);
-    }
-    console.log(`${questions.length} questions seeded`);
+    await seedContent();
 
     await mongoose.disconnect();
     console.log('Seeding complete!');
@@ -251,4 +245,6 @@ async function seed() {
   }
 }
 
-seed();
+if (require.main === module) seed();
+
+module.exports = { seedContent };

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-label="Business formation paperwork, a seal and a stamp on a desk">
+  <rect width="1200" height="760" fill="#eef3f9"/>
+  <circle cx="250" cy="190" r="150" fill="#1e90ff" opacity=".13"/>
+  <circle cx="980" cy="590" r="130" fill="#ffd700" opacity=".28"/>
+
+  <!-- back sheet -->
+  <g transform="rotate(-7 430 400)">
+    <rect x="250" y="150" width="420" height="520" rx="12" fill="#ffffff" stroke="#d4dde7" stroke-width="3"/>
+    <g fill="#dbe3ec">
+      <rect x="295" y="215" width="200" height="14" rx="7"/>
+      <rect x="295" y="255" width="330" height="10" rx="5"/>
+      <rect x="295" y="285" width="300" height="10" rx="5"/>
+      <rect x="295" y="315" width="320" height="10" rx="5"/>
+    </g>
+  </g>
+
+  <!-- front sheet: articles of organisation -->
+  <g transform="rotate(4 700 420)">
+    <rect x="470" y="120" width="440" height="560" rx="12" fill="#ffffff" stroke="#c8d3e0" stroke-width="3"/>
+    <rect x="515" y="175" width="250" height="20" rx="10" fill="#0b0b0b" opacity=".85"/>
+    <rect x="515" y="211" width="150" height="12" rx="6" fill="#1e90ff"/>
+    <g fill="#c3cedb">
+      <rect x="515" y="262" width="350" height="11" rx="5.5"/>
+      <rect x="515" y="294" width="320" height="11" rx="5.5"/>
+      <rect x="515" y="326" width="345" height="11" rx="5.5"/>
+      <rect x="515" y="358" width="280" height="11" rx="5.5"/>
+      <rect x="515" y="390" width="330" height="11" rx="5.5"/>
+    </g>
+
+    <!-- signature line -->
+    <line x1="515" y1="520" x2="775" y2="520" stroke="#9fadbd" stroke-width="3"/>
+    <path d="M525 512c18-22 30 12 46-6s26 10 44-12 28 14 46-6" fill="none" stroke="#0b0b0b" stroke-width="5" stroke-linecap="round"/>
+    <rect x="515" y="538" width="120" height="9" rx="4.5" fill="#dbe3ec"/>
+
+    <!-- gold seal -->
+    <g transform="translate(820 505)">
+      <circle cx="0" cy="0" r="52" fill="#ffd700"/>
+      <circle cx="0" cy="0" r="38" fill="none" stroke="#0b0b0b" stroke-width="3" opacity=".55"/>
+      <path d="M-14 2l9 11 20-24" fill="none" stroke="#0b0b0b" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M-26 44l-14 56 40-24 40 24-14-56z" fill="#ffd700"/>
+    </g>
+  </g>
+
+  <!-- gavel -->
+  <g transform="translate(150 470) rotate(-20)">
+    <rect x="0" y="40" width="150" height="20" rx="10" fill="#0b0b0b" opacity=".8"/>
+    <rect x="118" y="10" width="80" height="80" rx="12" fill="#1e90ff"/>
+  </g>
+</svg>

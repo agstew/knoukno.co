@@ -12,11 +12,12 @@ const PRICES = [
 
 // GET /api/payment/prices
 router.get('/prices', (req, res) => {
-  res.json(PRICES);
+  res.json(PRICES.map((price) => ({ ...price, checkoutAvailable: Boolean(process.env.STRIPE_SECRET_KEY) })));
 });
 
 // POST /api/payment/create-checkout-session
 router.post('/create-checkout-session', protect, async (req, res) => {
+  if (!process.env.STRIPE_SECRET_KEY) return res.status(503).json({ message: 'Checkout is not configured yet.' });
   try {
     const { tier } = req.body;
     const priceInfo = PRICES.find(p => p.id === tier);

@@ -40,7 +40,7 @@ export default function Questions({
   onBackToTitles
 }) {
   const currentQuestion = question || questions[0] || null;
-  const currentQuestionPosition = currentQuestion?.questionNumber || page || 0;
+  const currentQuestionPosition = page || 0;
   const maxQuestionPage = Math.min(totalPages, maxQ);
 
   return (
@@ -81,8 +81,8 @@ export default function Questions({
             <h3>No questions available</h3>
             <p>
               {tier === 'free'
-                ? 'Your free trial may have expired, or there are no questions available right now.'
-                : 'No questions are available right now.'}
+                ? 'No free questions are available for this selection. Choose another title or upgrade.'
+                : 'No questions are available for this selection right now.'}
             </p>
             {tier === 'free' && <Link to="/price" className="btn btn-primary">Upgrade Plan</Link>}
           </div>
@@ -101,7 +101,7 @@ export default function Questions({
         ) : currentQuestion ? (
           <div className="question-card">
             <div className="question-meta">
-              <span className="question-number">Q{currentQuestion.questionNumber}</span>
+              <span className="question-number">Q{page}</span>
               <span className="question-progress">Question {currentQuestionPosition} of {maxQuestionPage}</span>
             </div>
 

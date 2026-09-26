@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-label="Customers queueing and being served at a counter">
+  <rect width="1200" height="760" fill="#eef3f9"/>
+  <circle cx="990" cy="180" r="150" fill="#1e90ff" opacity=".12"/>
+  <circle cx="180" cy="620" r="110" fill="#ffd700" opacity=".26"/>
+
+  <!-- back wall menu -->
+  <rect x="760" y="120" width="330" height="210" rx="12" fill="#0b0b0b"/>
+  <g fill="#ffd700">
+    <rect x="800" y="160" width="150" height="14" rx="7"/>
+  </g>
+  <g fill="#ffffff" opacity=".55">
+    <rect x="800" y="196" width="230" height="10" rx="5"/>
+    <rect x="800" y="224" width="200" height="10" rx="5"/>
+    <rect x="800" y="252" width="215" height="10" rx="5"/>
+    <rect x="800" y="280" width="170" height="10" rx="5"/>
+  </g>
+
+  <!-- counter -->
+  <rect x="620" y="430" width="500" height="200" rx="12" fill="#ffffff" stroke="#c8d3e0" stroke-width="3"/>
+  <rect x="620" y="430" width="500" height="30" rx="12" fill="#1e90ff"/>
+
+  <!-- server behind counter -->
+  <g transform="translate(880 300)">
+    <circle cx="0" cy="0" r="46" fill="#0b0b0b" opacity=".85"/>
+    <circle cx="0" cy="-6" r="20" fill="#ffffff"/>
+    <path d="M-34 42a34 34 0 0 1 68 0z" fill="#ffffff"/>
+  </g>
+
+  <!-- cup handed over -->
+  <g transform="translate(690 386)">
+    <path d="M0 0h54v40a16 16 0 0 1-16 16H16A16 16 0 0 1 0 40z" fill="#ffd700"/>
+    <rect x="0" y="0" width="54" height="10" fill="#0b0b0b" opacity=".7"/>
+  </g>
+
+  <!-- queue of customers -->
+  <g transform="translate(150 330)">
+    <g>
+      <circle cx="0" cy="0" r="54" fill="#1e90ff"/>
+      <circle cx="0" cy="-8" r="23" fill="#ffffff"/>
+      <path d="M-38 48a38 38 0 0 1 76 0z" fill="#ffffff"/>
+      <rect x="-46" y="112" width="92" height="150" rx="20" fill="#1e90ff"/>
+    </g>
+    <g transform="translate(150 26)">
+      <circle cx="0" cy="0" r="48" fill="#0b0b0b" opacity=".8"/>
+      <circle cx="0" cy="-7" r="20" fill="#ffffff"/>
+      <path d="M-34 43a34 34 0 0 1 68 0z" fill="#ffffff"/>
+      <rect x="-41" y="100" width="82" height="136" rx="18" fill="#0b0b0b" opacity=".8"/>
+    </g>
+    <g transform="translate(290 44)">
+      <circle cx="0" cy="0" r="42" fill="#c3cedb"/>
+      <circle cx="0" cy="-6" r="17" fill="#ffffff"/>
+      <path d="M-29 37a29 29 0 0 1 58 0z" fill="#ffffff"/>
+      <rect x="-36" y="88" width="72" height="120" rx="16" fill="#c3cedb"/>
+    </g>
+  </g>
+
+  <rect x="60" y="628" width="1080" height="16" rx="8" fill="#0b0b0b" opacity=".82"/>
+</svg>

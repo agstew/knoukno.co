@@ -21,3 +21,7 @@ rad.json
 *.flf
 #Test results file
 TestResults.xml
+
+# Local frontend dependencies and generated output
+frontend/node_modules/
+frontend/build/

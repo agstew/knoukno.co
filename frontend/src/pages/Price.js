@@ -106,6 +106,7 @@ export default function Price() {
     acc[p.id] = p;
     return acc;
   }, {});
+  const checkoutAvailable = prices.some((plan) => plan.checkoutAvailable);
 
   const plans = [
     {
@@ -130,7 +131,7 @@ export default function Price() {
       discount: "20% off (Save $10.00)",
       questions: paidPlansById.members?.questions || 50,
       questionSummary: "50 questions",
-      durationText: "per month",
+      durationText: "one-time access",
       features: [
         "50 questions",
         "Print page access",
@@ -148,7 +149,7 @@ export default function Price() {
       discount: "35% off (Save $235.00)",
       questions: paidPlansById.pro?.questions || 75,
       questionSummary: "75 questions",
-      durationText: "per year",
+      durationText: "one-time access",
       features: [
         "75 questions",
         "Print page access",
@@ -166,6 +167,7 @@ export default function Price() {
       <p className="subtitle">
         Pay once. Access forever. No subscriptions, no renewals.
       </p>
+      {!checkoutAvailable && !loading && <p className="subtitle" role="status">Paid checkout is currently unavailable. You can still start free.</p>}
 
       {message && (
         <div
@@ -235,27 +237,19 @@ export default function Price() {
             </ul>
 
             {plan.id === "free" ? (
-              <div style={{ display: 'grid', gap: '0.55rem' }}>
-                <Link to="/free" className="btn btn-secondary btn-block">
-                  View Free Page
-                </Link>
-                <Link to="/register" className="btn btn-primary btn-block">
-                  Start Free Trial
-                </Link>
-              </div>
+              <Link to="/register" className="btn btn-primary btn-block">
+                Start Free Trial
+              </Link>
             ) : (
               <div style={{ display: 'grid', gap: '0.55rem' }}>
-                <Link to={plan.id === 'members' ? '/members' : '/pro'} className="btn btn-secondary btn-block">
-                  View {plan.name}
-                </Link>
                 <button
                   className="btn btn-primary btn-block"
                   onClick={() => handleCheckout(plan.id)}
-                  disabled={checkoutLoading === plan.id}
+                  disabled={checkoutLoading === plan.id || !checkoutAvailable}
                 >
                   {checkoutLoading === plan.id
                     ? "Redirecting…"
-                    : `Buy ${plan.name} with Stripe`}
+                    : checkoutAvailable ? `Buy ${plan.name} with Stripe` : 'Purchases unavailable'}
                 </button>
               </div>
             )}
