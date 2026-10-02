@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-export default function Login() {
-  const [form, setForm] = useState({ email: '', password: '' });
+export default function ResetPassword() {
+  const { token } = useParams();
+  const [form, setForm] = useState({ password: '', confirmPassword: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
@@ -17,20 +18,28 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    if (!form.email || !form.password) {
-      setError('Please enter your email and password.');
+    if (!form.password || !form.confirmPassword) {
+      setError('Please fill out both fields.');
+      return;
+    }
+    if (form.password.length < 6) {
+      setError('Password must be at least 6 characters.');
+      return;
+    }
+    if (form.password !== form.confirmPassword) {
+      setError('Passwords do not match.');
       return;
     }
     setLoading(true);
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetch(`/api/auth/reset-password/${token}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form)
+        body: JSON.stringify({ password: form.password })
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.message || 'Login failed.');
+        setError(data.message || 'Unable to reset password.');
       } else {
         login(data.token);
         navigate('/dashboard');
@@ -45,28 +54,14 @@ export default function Login() {
   return (
     <div className="auth-page">
       <div className="auth-card">
-        <h2>Welcome Back</h2>
-        <p className="auth-subtitle">Log in to your Kno U Kno account</p>
+        <h2>Reset Password</h2>
+        <p className="auth-subtitle">Choose a new password for your account</p>
 
         {error && <div className="alert alert-danger">{error}</div>}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label" htmlFor="email">Email Address</label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              className="form-control"
-              value={form.email}
-              onChange={handleChange}
-              placeholder="you@example.com"
-              autoComplete="email"
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label className="form-label" htmlFor="password">Password</label>
+            <label className="form-label" htmlFor="password">New Password</label>
             <input
               id="password"
               name="password"
@@ -74,8 +69,22 @@ export default function Login() {
               className="form-control"
               value={form.password}
               onChange={handleChange}
-              placeholder="Your password"
-              autoComplete="current-password"
+              placeholder="New password"
+              autoComplete="new-password"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label className="form-label" htmlFor="confirmPassword">Confirm Password</label>
+            <input
+              id="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              className="form-control"
+              value={form.confirmPassword}
+              onChange={handleChange}
+              placeholder="Confirm new password"
+              autoComplete="new-password"
               required
             />
           </div>
@@ -85,15 +94,12 @@ export default function Login() {
             disabled={loading}
             style={{ marginTop: '0.5rem' }}
           >
-            {loading ? 'Logging in…' : 'Log In'}
+            {loading ? 'Resetting…' : 'Reset Password'}
           </button>
         </form>
 
         <p className="auth-footer">
-          <Link to="/forgot-password">Forgot password?</Link>
-        </p>
-        <p className="auth-footer">
-          Don't have an account? <Link to="/register">Sign up free</Link>
+          <Link to="/login">Back to login</Link>
         </p>
       </div>
     </div>

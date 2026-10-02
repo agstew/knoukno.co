@@ -20,6 +20,8 @@ const userSchema = new mongoose.Schema({
   tierExpiry: { type: Date },
   bonusQuestions: { type: Number, default: 0 },
   stripeCustomerId: { type: String },
+  resetPasswordToken: { type: String },
+  resetPasswordExpire: { type: Date },
   createdAt: { type: Date, default: Date.now },
   savedAnswers: [savedAnswerSchema],
   averageGrade: { type: Number, default: 0 },

@@ -25,3 +25,10 @@ TestResults.xml
 # Local frontend dependencies and generated output
 frontend/node_modules/
 frontend/build/
+
+# Backend dependencies
+backend/node_modules/
+
+# Environment files
+.env
+*.env
