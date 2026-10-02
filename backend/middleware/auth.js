@@ -9,7 +9,7 @@ const protect = async (req, res, next) => {
     return res.status(401).json({ message: 'Not authorized, no token' });
   }
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'default_secret');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'default_secret', { algorithms: ['HS256'] });
     req.user = decoded;
     next();
   } catch (err) {
@@ -22,7 +22,7 @@ const optionalAuth = (req, res, next) => {
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     token = req.headers.authorization.split(' ')[1];
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'default_secret');
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'default_secret', { algorithms: ['HS256'] });
       req.user = decoded;
     } catch (err) {
       // ignore

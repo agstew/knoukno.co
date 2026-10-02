@@ -1,16 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
 const User = require('../models/User');
 const { protect } = require('../middleware/auth');
-const { sendPasswordResetEmail } = require('../utils/mailer');
 
 const signToken = (user) => {
   return jwt.sign(
     { id: user._id, email: user.email, role: user.role, tier: user.tier, name: user.name, tierExpiry: user.tierExpiry },
     process.env.JWT_SECRET || 'default_secret',
-    { expiresIn: process.env.JWT_EXPIRE || '7d' }
+    { expiresIn: process.env.JWT_EXPIRE || '7d', algorithm: 'HS256' }
   );
 };
 
@@ -68,61 +66,6 @@ router.post('/login', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server error during login' });
-  }
-});
-
-// POST /api/auth/forgot-password
-router.post('/forgot-password', async (req, res) => {
-  try {
-    const { email } = req.body;
-    if (!email) return res.status(400).json({ message: 'Email is required' });
-
-    const user = await User.findOne({ email: email.toLowerCase() });
-    // Always return a generic success message so we don't leak which emails are registered
-    if (user) {
-      const rawToken = crypto.randomBytes(32).toString('hex');
-      user.resetPasswordToken = crypto.createHash('sha256').update(rawToken).digest('hex');
-      user.resetPasswordExpire = Date.now() + 60 * 60 * 1000;
-      await user.save();
-
-      const resetUrl = `${process.env.CLIENT_URL || 'http://localhost:3000'}/reset-password/${rawToken}`;
-      await sendPasswordResetEmail(user.email, resetUrl);
-    }
-    res.json({ message: 'If that email is registered, a reset link has been sent.' });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Server error' });
-  }
-});
-
-// POST /api/auth/reset-password/:token
-router.post('/reset-password/:token', async (req, res) => {
-  try {
-    const { password } = req.body;
-    if (!password || password.length < 6) {
-      return res.status(400).json({ message: 'Password must be at least 6 characters' });
-    }
-    const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
-    const user = await User.findOne({
-      resetPasswordToken: hashedToken,
-      resetPasswordExpire: { $gt: Date.now() }
-    });
-    if (!user) {
-      return res.status(400).json({ message: 'Invalid or expired reset link' });
-    }
-    user.password = password;
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpire = undefined;
-    await user.save();
-
-    const token = signToken(user);
-    res.json({
-      token,
-      user: { id: user._id, name: user.name, email: user.email, role: user.role, tier: user.tier, tierExpiry: user.tierExpiry }
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Server error' });
   }
 });
 
