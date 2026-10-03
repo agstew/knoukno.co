@@ -1,0 +1,7 @@
+Options -MultiViews
+RewriteEngine On
+
+# Serve React's index.html for client-side routes like /login
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.html [L]

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { apiFetch } from '../api/client';
 
 export default function Home() {
   const { isAuthenticated } = useAuth();
@@ -8,7 +9,7 @@ export default function Home() {
 
   useEffect(() => {
     const controller = new AbortController();
-    fetch('/api/content/landing', { signal: controller.signal })
+    apiFetch('/api/content/landing', { signal: controller.signal })
       .then((response) => {
         if (!response.ok) throw new Error('Landing content unavailable');
         return response.json();
@@ -57,7 +58,7 @@ export default function Home() {
     <div className="site-home">
       <section className="live-hero">
         <div className="live-hero-inner">
-          <p className="live-eyebrow">knoukno.org</p>
+          <p className="live-eyebrow">knoukno.online</p>
           <h1>Kno U Kno<br /><span>Know you know.</span></h1>
           <p className="live-hero-copy">
             We show you how to start a business — from the basics all the way to the finish.
