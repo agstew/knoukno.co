@@ -1,16 +1,21 @@
-FROM node:24-bookworm-slim AS frontend
-WORKDIR /app/frontend
-COPY frontend/package.json frontend/package-lock.json ./
+FROM node:20-alpine AS base
+WORKDIR /app
+RUN apk add --no-cache libc6-compat
+COPY package*.json ./
 RUN npm ci
-COPY frontend/public ./public
-COPY frontend/src ./src
+COPY . .
 RUN npm run build
 
-FROM node:24-bookworm-slim
-WORKDIR /app/backend
-ENV NODE_ENV=production
-COPY backend/package.json backend/package-lock.json ./
-RUN npm ci --omit=dev
-COPY backend/ ./
-COPY --from=frontend /app/frontend/build ./public
+FROM node:20-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production \
+    PORT=3000 \
+    HOSTNAME=0.0.0.0
+
+COPY --from=base /app/package*.json ./
+COPY --from=base /app/public ./public
+COPY --from=base /app/.next/standalone ./
+COPY --from=base /app/.next/static ./.next/static
+
+EXPOSE 3000
 CMD ["node", "server.js"]
