@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Kno U Kno dark mark">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" x2="1">
+      <stop offset="0%" stop-color="#0D7F8E"/>
+      <stop offset="50%" stop-color="#0A5F73"/>
+      <stop offset="100%" stop-color="#071F2B"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0" x2="1">
+      <stop offset="0%" stop-color="#F2D79B"/>
+      <stop offset="50%" stop-color="#D7B268"/>
+      <stop offset="100%" stop-color="#B4883D"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="256" cy="256" r="212" fill="url(#bgGrad)"/>
+
+  <g fill="none" stroke="url(#goldGrad)" stroke-linecap="round" stroke-width="8">
+    <path d="M 90 256 C 150 120, 362 120, 422 256"/>
+    <path d="M 90 256 C 150 392, 362 392, 422 256"/>
+    <path d="M 256 90 C 392 150, 392 362, 256 422"/>
+    <path d="M 256 90 C 120 150, 120 362, 256 422"/>
+  </g>
+
+  <g fill="#E8C67E">
+    <circle cx="90" cy="256" r="10"/>
+    <circle cx="422" cy="256" r="10"/>
+    <circle cx="256" cy="90" r="10"/>
+    <circle cx="256" cy="422" r="10"/>
+    <circle cx="154" cy="156" r="8"/>
+    <circle cx="358" cy="156" r="8"/>
+    <circle cx="154" cy="356" r="8"/>
+    <circle cx="358" cy="356" r="8"/>
+  </g>
+
+  <g>
+    <rect x="176" y="138" width="40" height="244" rx="18" fill="#F3F4F2"/>
+    <path d="M 176 252 L 262 168" stroke="#F3F4F2" stroke-width="28" stroke-linecap="round"/>
+    <path d="M 176 252 L 262 336" stroke="#F3F4F2" stroke-width="28" stroke-linecap="round"/>
+    <path d="M 262 168 L 262 336" stroke="#F3F4F2" stroke-width="18" stroke-linecap="round" opacity="0.8"/>
+    <path d="M 174 252 L 262 168" stroke="#D7B268" stroke-width="5" stroke-linecap="round"/>
+    <path d="M 174 252 L 262 336" stroke="#D7B268" stroke-width="5" stroke-linecap="round"/>
+  </g>
+</svg>

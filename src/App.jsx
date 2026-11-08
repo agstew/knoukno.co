@@ -105,7 +105,7 @@ function App() {
             <p className="eyebrow">Business learning platform</p>
             <h1>Start, manage, and grow a business with practical learning.</h1>
             <p className="lead">
-              Kno U Kno helps entrepreneurs learn how to start a business, manage day-to-day operations,
+              Kno U Kn helps entrepreneurs learn how to start a business, manage day-to-day operations,
               and make money with a smart, disciplined system. The platform uses AI-generated prompts,
               examples, dashboards, and scoring tools to help people learn, plan, and improve their business decisions.
             </p>

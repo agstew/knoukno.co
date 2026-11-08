@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1900 700" role="img" aria-label="Kno U Kno lockup">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0d7f8e"/>
+      <stop offset="52%" stop-color="#0a5f73"/>
+      <stop offset="100%" stop-color="#071f2b"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0" x2="1">
+      <stop offset="0%" stop-color="#f2d79b"/>
+      <stop offset="50%" stop-color="#d7b268"/>
+      <stop offset="100%" stop-color="#b4883d"/>
+    </linearGradient>
+  </defs>
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 1200" role="img" aria-label="Kno U Kno logo lockup">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0e7f8d"/>
+      <stop offset="56%" stop-color="#0a677f"/>
+      <stop offset="100%" stop-color="#0a4d67"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0" x2="1">
+      <stop offset="0%" stop-color="#edd59b"/>
+      <stop offset="52%" stop-color="#d6b06a"/>
+      <stop offset="100%" stop-color="#be8f37"/>
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(40,80)">
+    <circle cx="360" cy="360" r="320" fill="url(#bgGrad)"/>
+
+    <g fill="none" stroke="url(#goldGrad)" stroke-linecap="round" stroke-width="9">
+      <path d="M 94 360 C 176 152, 544 152, 626 360"/>
+      <path d="M 94 360 C 176 568, 544 568, 626 360"/>
+      <path d="M 360 120 C 560 176, 560 544, 360 600"/>
+      <path d="M 360 120 C 160 176, 160 544, 360 600"/>
+    </g>
+
+    <g fill="#e1c57d">
+      <circle cx="210" cy="290" r="20"/>
+      <circle cx="510" cy="290" r="20"/>
+      <circle cx="360" cy="150" r="20"/>
+      <circle cx="360" cy="570" r="20"/>
+      <circle cx="270" cy="210" r="16"/>
+      <circle cx="450" cy="210" r="16"/>
+      <circle cx="270" cy="510" r="16"/>
+      <circle cx="450" cy="510" r="16"/>
+      <circle cx="154" cy="360" r="16"/>
+      <circle cx="566" cy="360" r="16"/>
+    </g>
+
+    <text x="360" y="415" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="250" font-weight="900" fill="#f2f5f4" letter-spacing="-18">KNO</text>
+  </g>
+
+  <g transform="translate(760,360)">
+    <text x="0" y="260" font-family="Arial, Helvetica, sans-serif" font-size="270" font-weight="900" fill="#0c1117" letter-spacing="-18">Kno</text>
+    <text x="580" y="260" font-family="Arial, Helvetica, sans-serif" font-size="270" font-weight="900" fill="#0c1117" letter-spacing="-12">U</text>
+    <text x="820" y="260" font-family="Arial, Helvetica, sans-serif" font-size="270" font-weight="900" fill="#0c1117" letter-spacing="-18">Kno</text>
+  </g>
+</svg>

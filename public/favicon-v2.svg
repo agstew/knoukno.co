@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Kno U Kno brand mark">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0D7F8E"/>
+      <stop offset="48%" stop-color="#0A5F73"/>
+      <stop offset="100%" stop-color="#071F2B"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0" x2="1">
+      <stop offset="0%" stop-color="#F2D79B"/>
+      <stop offset="50%" stop-color="#D7B268"/>
+      <stop offset="100%" stop-color="#B4883D"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="256" cy="256" r="212" fill="url(#bgGrad)"/>
+  <circle cx="256" cy="256" r="180" fill="none" stroke="url(#goldGrad)" stroke-width="7"/>
+
+  <g fill="#E8C67E">
+    <circle cx="116" cy="256" r="9"/>
+    <circle cx="396" cy="256" r="9"/>
+    <circle cx="256" cy="116" r="9"/>
+    <circle cx="256" cy="396" r="9"/>
+  </g>
+
+  <g>
+    <text x="256" y="300" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="138" font-weight="900" fill="#F4F5F3" letter-spacing="-8">KNO</text>
+  </g>
+</svg>
