@@ -1,34 +1,42 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Kno U Kno brand mark">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-label="Kno U Kno brand mark">
   <defs>
-    <linearGradient id="bgGrad" x1="0" x2="1">
-      <stop offset="0%" stop-color="#0D7F8E"/>
-      <stop offset="48%" stop-color="#0A5F73"/>
-      <stop offset="100%" stop-color="#071F2B"/>
+    <linearGradient id="bgGrad" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0e7f8d"/>
+      <stop offset="56%" stop-color="#0a677f"/>
+      <stop offset="100%" stop-color="#0a4d67"/>
     </linearGradient>
     <linearGradient id="goldGrad" x1="0" x2="1">
-      <stop offset="0%" stop-color="#F2D79B"/>
-      <stop offset="50%" stop-color="#D7B268"/>
-      <stop offset="100%" stop-color="#B4883D"/>
+      <stop offset="0%" stop-color="#edd59b"/>
+      <stop offset="52%" stop-color="#d6b06a"/>
+      <stop offset="100%" stop-color="#be8f37"/>
     </linearGradient>
   </defs>
-  <circle cx="256" cy="256" r="212" fill="url(#bgGrad)"/>
-  <g fill="none" stroke="url(#goldGrad)" stroke-linecap="round" stroke-width="8">
-    <path d="M 95 256 C 150 120, 360 120, 416 256"/>
-    <path d="M 95 256 C 150 390, 360 390, 416 256"/>
-    <path d="M 256 96 C 390 150, 390 360, 256 416"/>
-    <path d="M 256 96 C 120 150, 120 360, 256 416"/>
-  </g>
-  <g fill="#E8C67E">
-    <circle cx="120" cy="256" r="10"/>
-    <circle cx="392" cy="256" r="10"/>
-    <circle cx="256" cy="120" r="10"/>
-    <circle cx="256" cy="392" r="10"/>
-  </g>
+
   <g>
-    <rect x="208" y="122" width="36" height="268" rx="18" fill="#F4F5F3"/>
-    <path d="M 208 260 L 332 152" stroke="#F4F5F3" stroke-width="28" stroke-linecap="round"/>
-    <path d="M 208 260 L 332 368" stroke="#F4F5F3" stroke-width="28" stroke-linecap="round"/>
-    <path d="M 214 260 L 332 152" stroke="#D7B268" stroke-width="6" stroke-linecap="round"/>
-    <path d="M 214 260 L 332 368" stroke="#D7B268" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="400" cy="400" r="302" fill="url(#bgGrad)"/>
+
+    <g fill="none" stroke="url(#goldGrad)" stroke-linecap="round" stroke-width="8">
+      <path d="M 112 388 C 190 180, 610 180, 688 388"/>
+      <path d="M 112 388 C 190 602, 610 602, 688 388"/>
+      <path d="M 400 118 C 600 170, 600 630, 400 682"/>
+      <path d="M 400 118 C 200 170, 200 630, 400 682"/>
+    </g>
+
+    <g fill="#e1c57d">
+      <circle cx="214" cy="312" r="18"/>
+      <circle cx="586" cy="312" r="18"/>
+      <circle cx="400" cy="168" r="18"/>
+      <circle cx="400" cy="632" r="18"/>
+      <circle cx="260" cy="214" r="16"/>
+      <circle cx="540" cy="214" r="16"/>
+      <circle cx="260" cy="586" r="16"/>
+      <circle cx="540" cy="586" r="16"/>
+      <circle cx="152" cy="400" r="16"/>
+      <circle cx="648" cy="400" r="16"/>
+    </g>
+
+    <g>
+      <text x="400" y="440" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="240" font-weight="900" fill="#f2f5f4" letter-spacing="-18">KNO</text>
+    </g>
   </g>
 </svg>
