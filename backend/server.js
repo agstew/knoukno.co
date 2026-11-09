@@ -12,6 +12,7 @@ const questionRoutes = require('./routes/questions');
 const answerRoutes = require('./routes/answers');
 const adminRoutes = require('./routes/admin');
 const paymentRoutes = require('./routes/payment');
+const paypalRoutes = require('./routes/paypal');
 const contentRoutes = require('./routes/content');
 const { seedContent } = require('./seed');
 
@@ -60,6 +61,7 @@ app.use('/api/questions', questionRoutes);
 app.use('/api/answers', answerRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/payment', paymentRoutes);
+app.use('/api/paypal', paypalRoutes);
 app.use('/api/content', contentRoutes);
 
 app.get('/api/health', (req, res) => res.status(databaseReady ? 200 : 503).json({ status: databaseReady ? 'ok' : 'unavailable' }));
