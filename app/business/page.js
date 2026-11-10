@@ -154,6 +154,7 @@ export default function BusinessPage() {
           <button type="button" onClick={() => changeView('titles')}>Title</button>
           <button type="button" disabled={!business} onClick={() => changeView('dashboard')}>Dashboard</button>
           <button type="button" disabled={!business} onClick={() => changeView('questions')}>Questions</button>
+          <button type="button" disabled={!business} onClick={() => changeView('tasks')}>Tasks</button>
           <button type="button" disabled={!business} onClick={() => changeView('grade')}>Grade</button>
           <button type="button" disabled={!business} onClick={() => changeView('rated')}>Rated</button>
           <button type="button" disabled={!business} onClick={() => changeView('average')}>Average</button>
@@ -191,7 +192,9 @@ export default function BusinessPage() {
               <h1>{business.title}</h1>
               <p>Open the questions and examples to write your answers, then assign grades on the Grade page.</p>
               <button type="button" onClick={() => changeView('questions')}>Questions and examples</button>
+              <button type="button" onClick={() => changeView('tasks')}>Tasks</button>
             </>}
+            {view === 'tasks' && <PersonalTasks key={business.id} business={business} />}
             {view === 'questions' && <>
               <h1>{business.title}: Questions</h1>
               <p>Question {questionIndex + 1} of {aiQuestions.length}</p>
@@ -245,6 +248,103 @@ export default function BusinessPage() {
       </main>
     </div>
   )
+}
+
+function PersonalTasks({ business }) {
+  const [tasks, setTasks] = useState([])
+  const [name, setName] = useState('')
+  const [dueDate, setDueDate] = useState('')
+  const [page, setPage] = useState(0)
+  const [loading, setLoading] = useState(true)
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState('')
+  const [notice, setNotice] = useState('')
+
+  const request = useCallback(async (method, body, currentPage = 0, signal) => {
+    const token = getSession()?.token
+    if (!token) throw new Error('Please sign in again.')
+    const params = new URLSearchParams({ businessId: business.id, page: String(currentPage) })
+    const response = await fetch(`/api/tasks?${params}`, {
+      method,
+      headers: { Authorization: `Bearer ${token}`, ...(body ? { 'Content-Type': 'application/json' } : {}) },
+      ...(body ? { body: JSON.stringify(body) } : {}),
+      cache: 'no-store',
+      signal,
+    })
+    const result = await response.json()
+    if (!response.ok) throw new Error(result.error || 'Unable to access tasks.')
+    return result
+  }, [business.id])
+
+  useEffect(() => {
+    const controller = new AbortController()
+    setLoading(true)
+    setError('')
+    request('GET', null, page, controller.signal)
+      .then((result) => setTasks(result.tasks))
+      .catch((requestError) => { if (requestError.name !== 'AbortError') setError(requestError.message) })
+      .finally(() => { if (!controller.signal.aborted) setLoading(false) })
+    return () => controller.abort()
+  }, [page, request])
+
+  async function createTask(event) {
+    event.preventDefault()
+    setBusy(true)
+    setError('')
+    setNotice('')
+    try {
+      await request('POST', { name, due_date: dueDate })
+      setName('')
+      setDueDate('')
+      setNotice('Task saved.')
+      if (page !== 0) setPage(0)
+      else setTasks((await request('GET', null, 0)).tasks)
+    } catch (requestError) {
+      setError(requestError.message)
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  async function deleteTask(task) {
+    if (!window.confirm(`Delete "${task.name}"?`)) return
+    setBusy(true)
+    setError('')
+    setNotice('')
+    try {
+      await request('DELETE', { slug: task.slug })
+      setTasks((current) => current.filter((item) => item.slug !== task.slug))
+      setNotice('Task deleted.')
+    } catch (requestError) {
+      setError(requestError.message)
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return <>
+    <h1>Tasks: {business.title}</h1>
+    <p>Tasks are private to your account and this business.</p>
+    {error && <p className="business-message business-error" role="alert">{error}</p>}
+    {notice && <p className="business-message" role="status">{notice}</p>}
+    <form className="business-form" onSubmit={createTask}>
+      <label htmlFor="task-name">Task name</label>
+      <input id="task-name" value={name} onChange={(event) => setName(event.target.value)} maxLength={200} required />
+      <label htmlFor="task-due">Due date</label>
+      <input id="task-due" type="date" value={dueDate} onChange={(event) => setDueDate(event.target.value)} required />
+      <button type="submit" disabled={busy}>Save task</button>
+    </form>
+    {loading ? <p>Loading tasks...</p> : tasks.length === 0 ? <p>No tasks on this page.</p> :
+      <ul className="business-ranking">{tasks.map((task) => <li key={task.slug}>
+        <strong>{task.name}</strong><p>Due: {task.due_date}</p>
+        <button type="button" disabled={busy} onClick={() => deleteTask(task)}>Delete task</button>
+      </li>)}</ul>}
+    <div className="business-pagination">
+      <button type="button" disabled={busy || loading || page === 0} onClick={() => setPage((current) => current - 1)}>Previous</button>
+      <span>Page {page + 1}</span>
+      <button type="button" disabled={busy || loading || tasks.length < 20 || page === 50} onClick={() => setPage((current) => current + 1)}>Next</button>
+    </div>
+  </>
 }
 
 function AnswerList({ answers, busy, onGrade }) {

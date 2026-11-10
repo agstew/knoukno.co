@@ -112,3 +112,19 @@ test("listing follows truncated R2 pages and reports storage failures", async ()
 	env.TASKS.list = async () => { throw new Error("Storage unavailable"); };
 	assert.equal((await request("/api/tasks", { env })).status, 500);
 });
+
+test("personal task endpoints isolate users and businesses from the shared API", async () => {
+	const env = { TASK_API_TOKEN: token, TASKS: new MemoryBucket() };
+	const first = "/internal/users/user-one/businesses/business-one/tasks";
+	const otherUser = "/internal/users/user-two/businesses/business-one/tasks";
+	const otherBusiness = "/internal/users/user-one/businesses/business-two/tasks";
+	const task = { name: "Private", slug: "same-slug", due_date: "2026-11-10" };
+	assert.equal((await request(first, { auth: null, env })).status, 401);
+	assert.equal((await request(first, { method: "POST", body: task, env })).status, 201);
+	assert.equal((await request(otherUser, { env })).body.tasks.length, 0);
+	assert.equal((await request(otherBusiness, { env })).body.tasks.length, 0);
+	assert.equal((await request("/api/tasks", { env })).body.tasks.length, 0);
+	assert.equal((await request(`${otherUser}/same-slug`, { method: "DELETE", env })).status, 404);
+	assert.equal((await request(first, { env })).body.tasks.length, 1);
+	assert.equal((await request(`${first}/same-slug`, { method: "DELETE", env })).status, 200);
+});

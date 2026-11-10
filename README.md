@@ -51,6 +51,8 @@ The project includes a Railway configuration and Dockerfile for containerized de
 
 The application sends HSTS with a one-day lifetime for each HTTPS hostname. It does not include subdomains or request browser preload. Browsers ignore HSTS received over HTTP; the hosting layer redirects HTTP requests to HTTPS.
 
+The business dashboard includes private tasks for each signed-in user and business. Task records are stored in the separate R2 worker; business titles and answers remain in MongoDB. Configure the server-only `TASK_API_TOKEN` to match the worker secret. Never expose it to browser code. Tasks can be added, listed and deleted; list pages contain up to 20 tasks.
+
 Responses also disable MIME sniffing and framing, omit the Next.js `X-Powered-By` header, and use a Content Security Policy that permits the homepage's Unsplash images and uptime badge. The policy allows inline scripts and styles for Next.js compatibility, so it is not a strict nonce-based XSS defense. New external resources may require updating the policy.
 
 ## PayPal Sandbox testing

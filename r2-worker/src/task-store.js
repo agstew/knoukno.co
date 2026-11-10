@@ -2,16 +2,16 @@ const prefix = "tasks/";
 const pageSize = 20;
 const maxListRequests = 10;
 
-export function taskKey(slug) {
-	return `${prefix}${slug}`;
+export function taskKey(slug, namespace = prefix) {
+	return `${namespace}${slug}`;
 }
 
-export async function readTask(bucket, slug) {
-	const object = await bucket.get(taskKey(slug));
+export async function readTask(bucket, slug, namespace = prefix) {
+	const object = await bucket.get(taskKey(slug, namespace));
 	return object ? object.json() : null;
 }
 
-export async function listTasks(bucket, page, isCompleted) {
+export async function listTasks(bucket, page, isCompleted, namespace = prefix) {
 	const start = page * pageSize;
 	const selected = [];
 	let matching = 0;
@@ -23,7 +23,7 @@ export async function listTasks(bucket, page, isCompleted) {
 			throw new Error("Task listing exceeded the scan limit");
 		}
 		const result = await bucket.list({
-			prefix,
+			prefix: namespace,
 			limit: 1000,
 			include: ["customMetadata"],
 			...(cursor ? { cursor } : {}),
