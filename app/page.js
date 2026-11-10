@@ -234,6 +234,16 @@ export default function HomePage() {
 
       <footer className="site-footer">
         <p>© 2026 knoukno.co</p>
+        <a href="https://isitdown.now/">
+          <img
+            src="https://isitdown.now/badge/monitor/92b0c58b8ff613e5.svg"
+            alt="Uptime monitored by IsItDown.now"
+            width="160"
+            height="28"
+            loading="lazy"
+            referrerPolicy="no-referrer"
+          />
+        </a>
       </footer>
     </div>
   )
