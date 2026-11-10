@@ -9,6 +9,8 @@ const env = {
   PAYPAL_CLIENT_SECRET: 'test-secret',
   NEXT_PUBLIC_APP_URL: 'http://localhost:3000',
   PAYPAL_SANDBOX_MEMBER_PLAN_ID: 'P-TEST123',
+  PAYPAL_SANDBOX_MEMBER_BONUS_PLAN_ID: 'P-BONUS123',
+  PAYPAL_SANDBOX_PRO_BONUS_PLAN_ID: 'P-PRO123',
 }
 const plan = {
   id: 'P-TEST123',
@@ -37,6 +39,26 @@ test('only active plans matching price, interval, and recurring terms are accept
   assert.throws(() => validatePlan({ ...plan, billing_cycles: [{ ...plan.billing_cycles[0], pricing_scheme: { fixed_price: { currency_code: 'USD', value: '38.00' } } }] }, expected), /does not match/)
   assert.throws(() => validatePlan({ ...plan, billing_cycles: [{ ...plan.billing_cycles[0], pricing_scheme: { fixed_price: { currency_code: 'EUR', value: '39.00' } } }] }, expected), /does not match/)
   assert.throws(() => validatePlan({ ...plan, payment_preferences: { setup_fee: { value: '10.00' } } }, expected), /does not match/)
+})
+
+test('bonus plans require a one-time $100 fee and the correct base billing interval', () => {
+  const member = expectedPlan('Member-Bonus', env)
+  const bonusPlan = { ...plan, id: member.id, payment_preferences: { setup_fee: { currency_code: 'USD', value: '100.00' } } }
+  assert.equal(member.amount, '39.00')
+  assert.equal(member.interval, 'MONTH')
+  assert.doesNotThrow(() => validatePlan(bonusPlan, member))
+  assert.throws(() => validatePlan({ ...bonusPlan, payment_preferences: {} }, member), /does not match/)
+  assert.throws(() => validatePlan({ ...bonusPlan, payment_preferences: { setup_fee: { currency_code: 'USD', value: '99.00' } } }, member), /does not match/)
+  assert.throws(() => validatePlan({ ...bonusPlan, payment_preferences: { setup_fee: { currency_code: 'EUR', value: '100.00' } } }, member), /does not match/)
+
+  const pro = expectedPlan('Pro-Bonus', env)
+  assert.equal(pro.amount, '436.00')
+  assert.equal(pro.interval, 'YEAR')
+  assert.doesNotThrow(() => validatePlan({
+    ...bonusPlan,
+    id: pro.id,
+    billing_cycles: [{ ...plan.billing_cycles[0], frequency: { interval_unit: 'YEAR', interval_count: 1 }, pricing_scheme: { fixed_price: { currency_code: 'USD', value: '436.00' } } }],
+  }, pro))
 })
 
 test('creates a sandbox subscription with server-selected plan and local return URLs', async () => {

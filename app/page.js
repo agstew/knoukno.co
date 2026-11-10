@@ -208,8 +208,8 @@ export default function HomePage() {
               time. Examples illustrate a question in another way; your answer should reflect your own
               business, research, and judgment. Save each answer so you can return to it later, then
               assign a grade on the Grade page. You can review your total and average or reorder your
-              answers by importance. Some questions do not yet have an example, and the current set
-              is a starting point rather than a complete course. Revisit your decisions as you learn,
+              answers by importance. The current set is a starting point rather than a complete course.
+              Revisit your decisions as you learn,
               and seek professional guidance when your situation calls for it.
             </p>
           </div>
@@ -233,6 +233,7 @@ export default function HomePage() {
                 <div className="price-line">
                   <strong>{plan.price}</strong>
                 </div>
+                {plan.setupFee && <p>Plus {plan.setupFee} one-time bonus charge</p>}
 
                 <p className="question-caption">{plan.questions}</p>
 
