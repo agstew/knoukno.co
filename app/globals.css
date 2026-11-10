@@ -746,24 +746,147 @@ input {
   padding-top: 36px;
 }
 
+.business-site-header {
+  position: relative;
+  top: auto;
+}
+
+.business-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.business-nav button {
+  color: var(--white);
+  background: transparent;
+  border: 0;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.business-nav button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.business-nav .nav-logout {
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.business-workflow {
+  padding-top: 36px;
+}
+
+.business-card {
+  padding: 28px 24px;
+  border: 1px solid rgba(11, 45, 61, 0.15);
+  border-radius: 22px;
+  background: var(--white);
+}
+
+.business-card button {
+  padding: 0.7rem 1rem;
+  border: 0;
+  border-radius: 10px;
+  background: var(--blue);
+  color: var(--white);
+  cursor: pointer;
+}
+
+.business-card button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.business-form {
+  display: grid;
+  gap: 10px;
+  max-width: 650px;
+}
+
+.business-form input,
+.business-form textarea,
+.business-form select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #687c86;
+  border-radius: 8px;
+  font: inherit;
+}
+
+.business-form button {
+  justify-self: start;
+}
+
+.business-list,
+.business-ranking {
+  padding-left: 24px;
+}
+
+.business-list li,
+.business-ranking li {
+  margin: 14px 0;
+}
+
+.business-pagination {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.business-message {
+  padding: 12px;
+  border-radius: 8px;
+  background: #e4f2e7;
+  color: #173c20;
+}
+
+.business-error {
+  background: #ffebe8;
+  color: #7b1d17;
+}
+
+.admin-site-header {
+  background: var(--white);
+  border-color: rgba(11, 45, 61, 0.15);
+}
+
+.admin-site-header .main-nav a,
+.admin-site-header .nav-logout {
+  color: var(--navy);
+}
+
+.admin-site-header .nav-logout {
+  background: transparent;
+  border-color: rgba(11, 45, 61, 0.25);
+}
+
 .admin-panel {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, rgba(11, 45, 61, 0.96), rgba(20, 82, 108, 0.92));
+  background: var(--white);
   border: 1px solid rgba(212, 169, 72, 0.35);
   border-radius: 24px;
   padding: 28px 24px;
   box-shadow: 0 24px 50px rgba(11, 45, 61, 0.18);
 }
 
-.admin-panel::after {
-  content: "";
-  position: absolute;
-  inset: auto -10% -35% 50%;
-  width: 280px;
-  height: 280px;
-  background: radial-gradient(circle, rgba(212, 169, 72, 0.34), transparent 62%);
-  pointer-events: none;
+.admin-panel h1 {
+  color: var(--navy);
+}
+
+.admin-panel .eyebrow,
+.admin-panel .status-pill {
+  color: #795600;
+}
+
+.admin-panel .lead {
+  color: var(--white);
+  background: var(--navy);
+  border-radius: 12px;
+  padding: 12px 16px;
 }
 
 .admin-panel-header {

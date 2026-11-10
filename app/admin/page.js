@@ -50,12 +50,13 @@ export default function AdminPage() {
 
   return (
     <div className="page-shell narrow-shell">
-      <header className="site-header">
+      <header className="site-header admin-site-header">
         <Link href="/" className="brand-mark-wrap" aria-label="Kno U Kno home">
           <img src="/brand/logo-lockup.svg" alt="Kno U Kno" className="brand-lockup-image" />
         </Link>
         <nav className="main-nav" aria-label="Main navigation">
           <Link href="/">Home</Link>
+          <Link href="/business">Business titles</Link>
           <Link href="/login">Login</Link>
           <button type="button" className="nav-logout" onClick={handleLogout}>Logout</button>
         </nav>
