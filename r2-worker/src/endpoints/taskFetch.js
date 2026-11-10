@@ -1,14 +1,16 @@
-import { NotFoundException, OpenAPIRoute } from "chanfana";
+import { OpenAPIRoute } from "chanfana";
 import { z } from "zod";
 import { Task } from "../types.js";
+import { readTask } from "../task-store.js";
 
 export class TaskFetch extends OpenAPIRoute {
 	schema = {
 		tags: ["Tasks"],
 		summary: "Get a single Task by slug",
+		security: [{ bearerAuth: [] }],
 		request: {
 			params: z.object({
-				taskSlug: z.string().describe("Task slug"),
+				taskSlug: z.string().min(1).max(100).regex(/^[a-zA-Z0-9_-]+$/).describe("Task slug"),
 			}),
 		},
 		responses: {
@@ -33,23 +35,8 @@ export class TaskFetch extends OpenAPIRoute {
 		// Retrieve the validated slug
 		const { taskSlug } = data.params;
 
-		// Implement your own object fetch here
-
-		const exists = true;
-
-		if (!exists) {
-			throw new NotFoundException();
-		}
-
-		return {
-			success: true,
-			task: {
-				name: "my task",
-				slug: taskSlug,
-				description: "this needs to be done",
-				completed: false,
-				due_date: new Date().toISOString().slice(0, 10),
-			},
-		};
+		const task = await readTask(c.env.TASKS, taskSlug);
+		if (!task) return c.json({ success: false, error: "Task not found" }, 404);
+		return { success: true, task };
 	}
 }

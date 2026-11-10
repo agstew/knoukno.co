@@ -7,6 +7,9 @@
 	"name": "r2-worker",
 	"main": "src/index.js",
 	"compatibility_date": "2026-11-09",
+	"r2_buckets": [
+		{ "binding": "TASKS", "bucket_name": "knoukno-worker-tasks" }
+	],
 	"observability": {
 		"enabled": true
 	},

@@ -1,14 +1,16 @@
 import { OpenAPIRoute } from "chanfana";
 import { z } from "zod";
 import { Task } from "../types.js";
+import { readTask, taskKey } from "../task-store.js";
 
 export class TaskDelete extends OpenAPIRoute {
 	schema = {
 		tags: ["Tasks"],
 		summary: "Delete a Task",
+		security: [{ bearerAuth: [] }],
 		request: {
 			params: z.object({
-				taskSlug: z.string().describe("Task slug"),
+				taskSlug: z.string().min(1).max(100).regex(/^[a-zA-Z0-9_-]+$/).describe("Task slug"),
 			}),
 		},
 		responses: {
@@ -35,20 +37,9 @@ export class TaskDelete extends OpenAPIRoute {
 		// Retrieve the validated slug
 		const { taskSlug } = data.params;
 
-		// Implement your own object deletion here
-
-		// Return the deleted task for confirmation
-		return {
-			result: {
-				task: {
-					name: "Build something awesome with Cloudflare Workers",
-					slug: taskSlug,
-					description: "Lorem Ipsum",
-					completed: true,
-					due_date: "2022-12-24",
-				},
-			},
-			success: true,
-		};
+		const task = await readTask(c.env.TASKS, taskSlug);
+		if (!task) return c.json({ success: false, error: "Task not found" }, 404);
+		await c.env.TASKS.delete(taskKey(taskSlug));
+		return { result: { task }, success: true };
 	}
 }

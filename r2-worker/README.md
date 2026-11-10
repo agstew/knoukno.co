@@ -1,25 +1,23 @@
-# Cloudflare Workers OpenAPI 3.1
+# Private task worker
 
-This is a Cloudflare Worker with OpenAPI 3.1 using [chanfana](https://github.com/cloudflare/chanfana) and [Hono](https://github.com/honojs/hono).
+This Cloudflare Worker provides a shared task API backed by the private `knoukno-worker-tasks` R2 bucket. It is separate from the Kno U Kno website and does not provide per-user accounts.
 
-This is an example project made to be used as a quick start into building OpenAPI compliant Workers that generates the
-`openapi.json` schema automatically from code and validates the incoming request to the defined parameters or request body.
+## Configuration
 
-## Get started
+Install dependencies with `npm install`. The `TASKS` R2 binding is configured in `wrangler.jsonc`; create the named bucket before deploying. Set a random, unique token of at least 32 characters as the `TASK_API_TOKEN` Worker secret:
 
-1. Sign up for [Cloudflare Workers](https://workers.dev). The free tier is more than enough for most use cases.
-2. Clone this project and install dependencies with `npm install`
-3. Run `wrangler login` to login to your Cloudflare account in wrangler
-4. Run `wrangler deploy` to publish the API to Cloudflare Workers
+```sh
+npx wrangler secret put TASK_API_TOKEN
+npx wrangler deploy
+```
 
-## Project structure
+For local development, set `TASK_API_TOKEN` in an untracked `.dev.vars` file and run `npm run dev`. Never commit the token or put it in browser-side code. Requests to `/api/tasks` and `/api/tasks/:slug` require `Authorization: Bearer <token>`; missing or invalid credentials are rejected. The OpenAPI documentation at `/` and `/openapi.json` is public but contains no task data.
 
-1. Your main router is defined in `src/index.js`.
-2. Each endpoint has its own file in `src/endpoints/`.
-3. For more information read the [chanfana documentation](https://chanfana.pages.dev/) and [Hono documentation](https://hono.dev/docs).
+## Task API
 
-## Development
+- `POST /api/tasks`: create a task with `name`, `slug`, optional `description`, optional `completed` (default `false`), and `due_date` in `YYYY-MM-DD` format. Slugs contain only letters, digits, `_`, or `-`. Duplicate slugs return 409.
+- `GET /api/tasks/:slug`: retrieve a task; missing tasks return 404.
+- `DELETE /api/tasks/:slug`: delete a task; missing tasks return 404.
+- `GET /api/tasks`: list 20 tasks per zero-based `page` (0–50), optionally filtered by `isCompleted=true` or `isCompleted=false`. Listing scans at most ten R2 pages; exceeding that limit returns an error rather than an incomplete result.
 
-1. Run `wrangler dev` to start a local instance of the API.
-2. Open `http://localhost:8787/` in your browser to see the Swagger interface where you can try the endpoints.
-3. Changes made in the `src/` folder will automatically trigger the server to reload, you only need to refresh the Swagger interface.
+The API uses a single shared token: anyone with it can read and delete all tasks. R2 operations and storage may incur Cloudflare charges. Run tests with `node --test tests/*.test.js`.

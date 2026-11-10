@@ -1,16 +1,18 @@
 import { OpenAPIRoute } from "chanfana";
 import { z } from "zod";
 import { Task } from "../types.js";
+import { listTasks } from "../task-store.js";
 
 export class TaskList extends OpenAPIRoute {
 	schema = {
 		tags: ["Tasks"],
 		summary: "List Tasks",
+		security: [{ bearerAuth: [] }],
 		request: {
 			query: z.object({
-				page: z.number().default(0).describe("Page number"),
+				page: z.coerce.number().int().min(0).max(50).default(0).describe("Zero-based page number (20 tasks per page)"),
 				isCompleted: z
-					.boolean()
+					.enum(["true", "false"])
 					.optional()
 					.describe("Filter by completed flag"),
 			}),
@@ -37,26 +39,9 @@ export class TaskList extends OpenAPIRoute {
 		// Retrieve the validated parameters
 		const { page, isCompleted } = data.query;
 
-		// Implement your own object list here
-
 		return {
 			success: true,
-			tasks: [
-				{
-					name: "Clean my room",
-					slug: "clean-room",
-					description: undefined,
-					completed: false,
-					due_date: "2025-01-05",
-				},
-				{
-					name: "Build something awesome with Cloudflare Workers",
-					slug: "cloudflare-workers",
-					description: "Lorem Ipsum",
-					completed: true,
-					due_date: "2022-12-24",
-				},
-			],
+			tasks: await listTasks(c.env.TASKS, page, isCompleted === undefined ? undefined : isCompleted === "true"),
 		};
 	}
 }

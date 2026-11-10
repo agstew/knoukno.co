@@ -1,11 +1,13 @@
 import { OpenAPIRoute } from "chanfana";
 import { z } from "zod";
 import { Task } from "../types.js";
+import { taskKey } from "../task-store.js";
 
 export class TaskCreate extends OpenAPIRoute {
 	schema = {
 		tags: ["Tasks"],
 		summary: "Create a new Task",
+		security: [{ bearerAuth: [] }],
 		request: {
 			body: {
 				content: {
@@ -37,9 +39,13 @@ export class TaskCreate extends OpenAPIRoute {
 		// Retrieve the validated request body
 		const taskToCreate = data.body;
 
-		// Implement your own object insertion here
+		const stored = await c.env.TASKS.put(taskKey(taskToCreate.slug), JSON.stringify(taskToCreate), {
+			onlyIf: new Headers({ "If-None-Match": "*" }),
+			httpMetadata: { contentType: "application/json" },
+			customMetadata: { completed: String(taskToCreate.completed) },
+		});
+		if (!stored) return c.json({ success: false, error: "Task already exists" }, 409);
 
-		// return the new task
 		return c.json(
 			{
 				success: true,
