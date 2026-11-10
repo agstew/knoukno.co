@@ -12,7 +12,7 @@ On the Rated page, changes to answer order are drafts until **Save ranking** is 
 
 The business dashboard's **Print saved answers** button opens the browser print dialog for a report containing saved answers in saved ranking order, grades, total, and average. Unsaved answer edits and ranking drafts are not included. The browser can also save the report as a PDF.
 
-Planned paid plan question limits apply to the entire subscription. Member is $39 per month and Pro is $436 per year. Each bonus option adds 100 questions for a one-time $100 charge; the underlying subscription continues at its regular monthly or yearly rate.
+Planned paid plan question limits apply to the entire subscription. Member is $39 per month, Pro is $436 per year, and Pro-Bonus is $525.99 per year. Each bonus option adds 100 questions for a one-time $100 charge in addition to its recurring plan price.
 
 ## Local development
 
@@ -61,4 +61,4 @@ Responses also disable MIME sniffing and framing, omit the Next.js `X-Powered-By
 
 The local-only `/sandbox-checkout` page tests recurring subscriptions without enabling paid access. It is disabled in production, even if Sandbox credentials are configured. Sign in to a local account, use a PayPal Sandbox buyer account, and configure `.env.local` using `.env.example`. Never commit credentials.
 
-Create active Sandbox subscription plans with USD fixed prices and one indefinite regular billing cycle: Member and Member-Bonus at $39 monthly; Pro and Pro-Bonus at $436 yearly. Configure a one-time USD $100 setup fee for each bonus plan and no setup fee for the others. Do not configure a trial or tax. Set the corresponding `PAYPAL_SANDBOX_*_PLAN_ID` values. The server verifies each plan against the displayed recurring price, interval, and one-time bonus fee before sending the buyer to PayPal, and checks subscription status with PayPal on return. A sandbox subscription does not unlock features, enforce limits, or set up emails; live checkout remains unavailable.
+Create active Sandbox subscription plans with USD fixed prices and one indefinite regular billing cycle: Member and Member-Bonus at $39 monthly; Pro at $436 yearly; and Pro-Bonus at $525.99 yearly. Configure a one-time USD $100 setup fee for each bonus plan and no setup fee for the others. Do not configure a trial or tax. Set the corresponding `PAYPAL_SANDBOX_*_PLAN_ID` values. The server verifies each plan against the displayed recurring price, interval, and one-time bonus fee before sending the buyer to PayPal, and checks subscription status with PayPal on return. A sandbox subscription does not unlock features, enforce limits, or set up emails; live checkout remains unavailable.
