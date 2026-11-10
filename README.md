@@ -46,3 +46,9 @@ Password reset requires `MONGODB_URI`, `RESEND_API_KEY`, `RESEND_FROM`, and a pu
 ## Deployment
 
 The project includes a Railway configuration and Dockerfile for containerized deployment.
+
+## PayPal Sandbox testing
+
+The local-only `/sandbox-checkout` page tests recurring subscriptions without enabling paid access. It is disabled in production, even if Sandbox credentials are configured. Sign in to a local account, use a PayPal Sandbox buyer account, and configure `.env.local` using `.env.example`. Never commit credentials.
+
+Create active Sandbox subscription plans with USD fixed prices and one indefinite regular billing cycle: Member $39 monthly, Member-Bonus $199 monthly, Pro $436 yearly, and Pro-Bonus $299 monthly. Do not configure a trial, setup fee, or tax on these test plans. Set the corresponding `PAYPAL_SANDBOX_*_PLAN_ID` values. The server verifies each plan against the displayed price and interval before sending the buyer to PayPal, and checks subscription status with PayPal on return. A sandbox subscription does not unlock features, enforce limits, or set up emails; live checkout remains unavailable.
