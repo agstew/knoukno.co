@@ -10,11 +10,9 @@ export async function POST(request) {
     }
 
     const result = await sendPasswordResetEmail({ email })
-    return Response.json({
-      message: result.message,
-      resetUrl: result.resetUrl || null,
-    })
+    return Response.json({ message: result.message })
   } catch (error) {
-    return Response.json({ error: error.message || 'Unable to send reset email.' }, { status: 500 })
+    console.error('Password reset request failed:', error)
+    return Response.json({ error: 'Unable to send reset email. Please try again later.' }, { status: 503 })
   }
 }

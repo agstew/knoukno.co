@@ -55,7 +55,7 @@ export default function HomePage() {
 
           <div className="hero-visual" aria-label="Business categories">
             <div className="brand-hero-card">
-              <img src="/brand/logo-lockup.svg" alt="Kno U Kno logo lockup" className="hero-logo-mark" />
+              <img src="/brand/home-logo.png" alt="Kno U Kno logo" className="hero-logo-mark" width="629" height="699" />
             </div>
             {businessCards.map((card) => (
               <div key={card} className="hero-badge">
@@ -136,8 +136,9 @@ export default function HomePage() {
 
         <section id="price" className="pricing-section">
           <div className="section-heading center-heading">
-            <p className="eyebrow">Pricing</p>
+            <p className="eyebrow">Planned pricing</p>
             <h2>Choose the tier that matches your business learning pace.</h2>
+            <p>These plans are not yet available for purchase. Question limits apply to the entire subscription, not each billing period.</p>
           </div>
 
           <div className="pricing-grid">
@@ -149,7 +150,6 @@ export default function HomePage() {
                 </div>
 
                 <div className="price-line">
-                  <span className="old-price">{plan.original}</span>
                   <strong>{plan.price}</strong>
                 </div>
 
@@ -166,7 +166,7 @@ export default function HomePage() {
             ))}
           </div>
 
-          <div className="bonus-banner">Bonus: 100 questions for $100.00 if you buy now.</div>
+          <div className="bonus-banner">Paid plans will include daily learning emails for up to two years while the subscription is active.</div>
         </section>
 
         <section className="panel-grid">
