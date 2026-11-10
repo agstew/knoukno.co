@@ -1,0 +1,126 @@
+$blue: #1e90ff;
+$ink: #101923;
+$gold: #c5962f;
+
+.home {
+  :global(.site-header) {
+    background: #fff;
+    border: 1px solid #dfe7ef;
+    box-shadow: 0 8px 26px rgb(16 25 35 / 6%);
+  }
+
+  :global(.brand-mini-icon) { width: 52px; }
+  :global(.brand-mini-wordmark) {
+    color: $ink;
+    font-size: clamp(1.6rem, 2.4vw, 2rem);
+    letter-spacing: -0.06em;
+  }
+  :global(.main-nav a) {
+    color: $ink;
+    padding: 0.5rem 0.2rem;
+  }
+  :global(.main-nav a:hover) { color: #075cae; }
+  :global(.main-nav a:focus-visible),
+  :global(.cta-row a:focus-visible) {
+    outline: 3px solid $blue;
+    outline-offset: 4px;
+  }
+
+  :global(.hero-section) {
+    grid-template-columns: 1fr 0.9fr;
+    gap: clamp(2rem, 5vw, 5rem);
+    padding: clamp(3rem, 8vw, 6rem) 0 4rem;
+  }
+  :global(.hero-copy h1) {
+    color: $ink;
+    font-size: clamp(2.8rem, 5.2vw, 5rem);
+    line-height: 1.04;
+  }
+  :global(.eyebrow) { color: #825a08; }
+  :global(.info-card .eyebrow),
+  :global(.sub-panel .eyebrow),
+  :global(.metric-card .eyebrow) { color: #f5d47a; }
+  :global(.lead) { color: #33475b; }
+  :global(.hero-visual) {
+    position: relative;
+    display: block;
+    min-width: 0;
+  }
+  :global(.primary-button) {
+    background: #096ccc;
+    color: #fff;
+    border-color: #096ccc;
+  }
+  :global(.secondary-button) {
+    background: #fff;
+    color: $ink;
+    border: 1px solid #bccbd8;
+  }
+  :global(.trust-strip) {
+    background: $ink;
+    border: 0;
+    border-radius: 20px;
+    padding: 1.8rem;
+  }
+  :global(.trust-strip strong) { color: #fff; }
+  :global(.trust-strip span) { color: #dce8f4; }
+
+  :global(.feature-grid),
+  :global(.workflow-section),
+  :global(.business-introduction),
+  :global(.pricing-section),
+  :global(.panel-grid),
+  :global(.stats-grid) { margin-top: clamp(3rem, 6vw, 5rem); }
+
+  :global(.info-card),
+  :global(.workflow-step),
+  :global(.sub-panel),
+  :global(.metric-card) {
+    border-color: #dfe7ef;
+    box-shadow: 0 8px 28px rgb(16 25 35 / 5%);
+  }
+  :global(.business-introduction) {
+    border-top: 3px solid $gold;
+  }
+  :global(.site-footer) { border-top: 1px solid #dfe7ef; }
+}
+
+.heroImage {
+  width: 100%;
+  min-height: 420px;
+  max-height: 560px;
+  object-fit: cover;
+  border-radius: 28px;
+}
+
+.heroNote {
+  position: absolute;
+  right: -1rem;
+  bottom: 1.5rem;
+  display: grid;
+  gap: 0.5rem;
+  max-width: 80%;
+  padding: 1.25rem 1.5rem;
+  color: #fff;
+  background: $ink;
+  border-left: 5px solid $gold;
+  border-radius: 12px;
+  box-shadow: 0 16px 35px rgb(16 25 35 / 20%);
+
+  span {
+    color: #f6d882;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+  }
+  strong { line-height: 1.35; }
+}
+
+@media (max-width: 700px) {
+  .home {
+    :global(.site-header) { position: relative; top: auto; }
+    :global(.hero-section) { grid-template-columns: 1fr; padding: 2.5rem 0; }
+  }
+  .heroImage { min-height: 260px; max-height: 360px; }
+  .heroNote { right: 0.75rem; bottom: 0.75rem; }
+}

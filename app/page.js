@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { navItems, businessCards, pricePlans, aiQuestions, aiExamples, clientAnswers } from '../lib/site-data'
+import { navItems, pricePlans, aiQuestions, aiExamples, clientAnswers } from '../lib/site-data'
+import styles from './home.module.scss'
 
 const questionPageSize = 5
 const examplePageSize = 5
@@ -17,7 +18,7 @@ export default function HomePage() {
   const answers = chunk(clientAnswers, answerPageSize)
 
   return (
-    <div className="page-shell">
+    <div className={`page-shell ${styles.home}`}>
       <header className="site-header">
         <Link href="/" className="brand-mark-wrap brand-home-lockup" aria-label="Kno U Kno home">
           <img src="/brand/logo-mark.svg" alt="Kno U Kno logo mark" className="brand-mini-icon" />
@@ -53,15 +54,12 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="hero-visual" aria-label="Business categories">
-            <div className="brand-hero-card">
-              <img src="/brand/home-logo.png" alt="Kno U Kno logo" className="hero-logo-mark" width="629" height="699" />
+          <div className="hero-visual">
+            <img className={styles.heroImage} src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80" alt="Business owners planning together around a table" />
+            <div className={styles.heroNote}>
+              <span>YOUR BUSINESS JOURNEY</span>
+              <strong>Plan with purpose.<br />Grow with confidence.</strong>
             </div>
-            {businessCards.map((card) => (
-              <div key={card} className="hero-badge">
-                {card}
-              </div>
-            ))}
           </div>
         </section>
 
@@ -82,13 +80,6 @@ export default function HomePage() {
             <strong>Self guided</strong>
             <span>business learning</span>
           </div>
-        </section>
-
-        <section className="image-strip" aria-label="Business images">
-          <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80" alt="Business strategy" />
-          <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80" alt="Startup team planning" />
-          <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=900&q=80" alt="Investor meeting" />
-          <img src="https://images.unsplash.com/photo-1516321165247-4aa89a48be28?auto=format&fit=crop&w=900&q=80" alt="Business dashboard" />
         </section>
 
         <section className="feature-grid">
