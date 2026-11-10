@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import { clearSession, getSession } from '../../lib/auth-client'
-import { gradePoints, gradeSummary, questionAt } from '../../lib/business-workflow'
+import { gradePoints, gradeSummary, questionAt, rankingDraft } from '../../lib/business-workflow'
 import { aiQuestions } from '../../lib/site-data'
 
 export default function BusinessPage() {
@@ -15,13 +15,17 @@ export default function BusinessPage() {
   const [title, setTitle] = useState('')
   const [questionIndex, setQuestionIndex] = useState(0)
   const [answerText, setAnswerText] = useState('')
-  const [grade, setGrade] = useState('')
   const [error, setError] = useState('')
   const [notice, setNotice] = useState('')
   const [loading, setLoading] = useState(true)
   const [busy, setBusy] = useState(false)
   const [draggedIndex, setDraggedIndex] = useState(null)
+  const [rankingDrafts, setRankingDrafts] = useState({})
   const business = businesses.find((item) => item.id === selectedId)
+  const rankingOrder = business ? rankingDraft(business.answers, rankingDrafts[business.id]) : []
+  const rankedAnswers = business ? rankingOrder.map((index) => business.answers.find((answer) => answer.questionIndex === index)) : []
+  const rankingChanged = business && rankingOrder.some((index, position) => index !== business.answers[position].questionIndex)
+  const hasRankingDrafts = Object.keys(rankingDrafts).length > 0
 
   const request = useCallback(async (method, body) => {
     const token = getSession()?.token
@@ -56,8 +60,17 @@ export default function BusinessPage() {
   useEffect(() => {
     const answer = business?.answers.find((item) => item.questionIndex === questionIndex)
     setAnswerText(answer?.text || '')
-    setGrade(answer?.grade || '')
   }, [business, questionIndex])
+
+  useEffect(() => {
+    if (!hasRankingDrafts) return
+    const warn = (event) => {
+      event.preventDefault()
+      event.returnValue = ''
+    }
+    window.addEventListener('beforeunload', warn)
+    return () => window.removeEventListener('beforeunload', warn)
+  }, [hasRankingDrafts])
 
   async function createBusiness(event) {
     event.preventDefault()
@@ -77,7 +90,7 @@ export default function BusinessPage() {
   }
 
   async function updateBusiness(payload, successMessage) {
-    if (!business || busy) return
+    if (!business || busy) return false
     setBusy(true)
     setError('')
     setNotice('')
@@ -85,19 +98,44 @@ export default function BusinessPage() {
       const result = await request('PATCH', { id: business.id, version: business.version, ...payload })
       setBusinesses((current) => current.map((item) => item.id === result.business.id ? result.business : item))
       setNotice(successMessage)
+      return true
     } catch (requestError) {
       setError(requestError.message)
+      return false
     } finally {
       setBusy(false)
     }
   }
 
   function moveAnswer(from, to) {
-    if (!business || from === to || to < 0 || to >= business.answers.length) return
-    const order = business.answers.map((answer) => answer.questionIndex)
+    if (!business || busy || from === to || from < 0 || from >= rankingOrder.length || to < 0 || to >= rankingOrder.length) return
+    const order = [...rankingOrder]
     const [item] = order.splice(from, 1)
     order.splice(to, 0, item)
-    updateBusiness({ action: 'reorder', order }, 'Ranking saved.')
+    setRankingDrafts((current) => {
+      const next = { ...current }
+      if (order.every((index, position) => index === business.answers[position].questionIndex)) delete next[business.id]
+      else next[business.id] = order
+      return next
+    })
+    setNotice('')
+    setError('')
+  }
+
+  async function saveRanking() {
+    if (!business || !rankingChanged || busy) return
+    const id = business.id
+    if (await updateBusiness({ action: 'reorder', order: rankingOrder }, 'Ranking saved.')) {
+      setRankingDrafts((current) => {
+        const next = { ...current }
+        delete next[id]
+        return next
+      })
+    }
+  }
+
+  function confirmLeave() {
+    return !hasRankingDrafts || window.confirm('You have unsaved ranking changes. Leave without saving?')
   }
 
   function changeView(nextView) {
@@ -111,7 +149,7 @@ export default function BusinessPage() {
   return (
     <div className="page-shell narrow-shell">
       <header className="site-header business-site-header">
-        <Link href="/" className="brand-mark-wrap">Kno U Kno</Link>
+        <Link href="/" className="brand-mark-wrap" onClick={(event) => { if (!confirmLeave()) event.preventDefault() }}>Kno U Kno</Link>
         <nav className="main-nav business-nav" aria-label="Business navigation">
           <button type="button" onClick={() => changeView('titles')}>Title</button>
           <button type="button" disabled={!business} onClick={() => changeView('dashboard')}>Dashboard</button>
@@ -119,7 +157,7 @@ export default function BusinessPage() {
           <button type="button" disabled={!business} onClick={() => changeView('grade')}>Grade</button>
           <button type="button" disabled={!business} onClick={() => changeView('rated')}>Rated</button>
           <button type="button" disabled={!business} onClick={() => changeView('average')}>Average</button>
-          <button type="button" className="nav-logout" onClick={() => { clearSession(); router.replace('/login') }}>Logout</button>
+          <button type="button" className="nav-logout" onClick={() => { if (confirmLeave()) { clearSession(); router.replace('/login') } }}>Logout</button>
         </nav>
       </header>
 
@@ -151,7 +189,7 @@ export default function BusinessPage() {
           <section className="business-card">
             {view === 'dashboard' && <>
               <h1>{business.title}</h1>
-              <p>Open the questions and examples to write and grade your answers.</p>
+              <p>Open the questions and examples to write your answers, then assign grades on the Grade page.</p>
               <button type="button" onClick={() => changeView('questions')}>Questions and examples</button>
             </>}
             {view === 'questions' && <>
@@ -159,14 +197,9 @@ export default function BusinessPage() {
               <p>Question {questionIndex + 1} of {aiQuestions.length}</p>
               <h2>{questionAt(questionIndex).question}</h2>
               <p>{questionAt(questionIndex).example || 'No sample example is available for this question.'}</p>
-              <form className="business-form" onSubmit={(event) => { event.preventDefault(); updateBusiness({ action: 'answer', questionIndex, text: answerText, grade: grade || null }, 'Answer saved.') }}>
+              <form className="business-form" onSubmit={(event) => { event.preventDefault(); updateBusiness({ action: 'answer', questionIndex, text: answerText }, 'Answer saved. Assign its grade on the Grade page.') }}>
                 <label htmlFor="answer">Your answer</label>
                 <textarea id="answer" value={answerText} onChange={(event) => setAnswerText(event.target.value)} maxLength={10000} required rows={5} />
-                <label htmlFor="grade">Grade</label>
-                <select id="grade" value={grade} onChange={(event) => setGrade(event.target.value)} required>
-                  <option value="">Select a grade</option>
-                  {Object.entries(gradePoints).map(([letter, points]) => <option key={letter} value={letter}>{letter} = {points}</option>)}
-                </select>
                 <button type="submit" disabled={busy}>Save answer</button>
               </form>
               <div className="business-pagination">
@@ -178,13 +211,15 @@ export default function BusinessPage() {
             {view === 'grade' && <>
               <h1>Grades: {business.title}</h1>
               <p>Total grade points: <strong>{summary.total}</strong> ({summary.count} graded answers)</p>
-              <AnswerList answers={business.answers} />
+              <p>Ungraded answers are excluded from the total and average.</p>
+              <AnswerList answers={business.answers} busy={busy} onGrade={(questionIndex, grade) => updateBusiness({ action: 'grade', questionIndex, grade }, 'Grade saved.')} />
             </>}
             {view === 'rated' && <>
               <h1>Ranked answers: {business.title}</h1>
-              <p>Drag answers or use the move buttons to change their order.</p>
+              <p>Drag answers or use the move buttons, then select Save ranking. Unsaved changes are lost if you leave or reload.</p>
+              {rankingChanged && <p role="status">You have unsaved ranking changes.</p>}
               {business.answers.length === 0 ? <p>No saved answers yet.</p> : <ol className="business-ranking">
-                {business.answers.map((answer, index) => (
+                {rankedAnswers.map((answer, index) => (
                   <li key={answer.questionIndex} draggable={!busy}
                     onDragStart={() => setDraggedIndex(index)}
                     onDragEnd={() => setDraggedIndex(null)}
@@ -194,11 +229,12 @@ export default function BusinessPage() {
                     <p>{answer.text}</p>
                     <div className="business-pagination">
                       <button type="button" disabled={busy || index === 0} onClick={() => moveAnswer(index, index - 1)}>Move up</button>
-                      <button type="button" disabled={busy || index === business.answers.length - 1} onClick={() => moveAnswer(index, index + 1)}>Move down</button>
+                      <button type="button" disabled={busy || index === rankedAnswers.length - 1} onClick={() => moveAnswer(index, index + 1)}>Move down</button>
                     </div>
                   </li>
                 ))}
               </ol>}
+              <button type="button" disabled={busy || !rankingChanged} onClick={saveRanking}>Save ranking</button>
             </>}
             {view === 'average' && <>
               <h1>Average: {business.title}</h1>
@@ -211,13 +247,24 @@ export default function BusinessPage() {
   )
 }
 
-function AnswerList({ answers }) {
+function AnswerList({ answers, busy, onGrade }) {
   if (!answers.length) return <p>No saved answers yet.</p>
   return <ol className="business-ranking">
     {answers.map((answer) => <li key={answer.questionIndex}>
       <strong>{questionAt(answer.questionIndex).question}</strong>
       <p>{answer.text}</p>
       <p>Grade: {answer.grade ? `${answer.grade} = ${gradePoints[answer.grade]}` : 'Not graded'}</p>
+      <form className="business-form" onSubmit={(event) => {
+        event.preventDefault()
+        onGrade(answer.questionIndex, new FormData(event.currentTarget).get('grade'))
+      }}>
+        <label htmlFor={`grade-${answer.questionIndex}`}>Assign grade</label>
+        <select id={`grade-${answer.questionIndex}`} name="grade" defaultValue={answer.grade || ''} required disabled={busy}>
+          <option value="">Select a grade</option>
+          {Object.entries(gradePoints).map(([letter, points]) => <option key={letter} value={letter}>{letter} = {points}</option>)}
+        </select>
+        <button type="submit" disabled={busy}>Save grade</button>
+      </form>
     </li>)}
   </ol>
 }

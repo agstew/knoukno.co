@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto'
 import { MongoClient } from 'mongodb'
 import { getCurrentUserFromToken } from '../../../lib/auth-server'
-import { reorderAnswers, saveAnswer, validateTitle } from '../../../lib/business-workflow'
+import { gradeAnswer, reorderAnswers, saveAnswer, validateTitle } from '../../../lib/business-workflow'
 
 async function authenticate(request) {
   const authorization = request.headers.get('authorization') || ''
@@ -73,7 +73,7 @@ export async function PATCH(request) {
   return handle(request, async (user) => {
     const body = await readBody(request)
     if (!body || typeof body.id !== 'string' || !Number.isInteger(body.version) || body.version < 0 ||
-        !['answer', 'reorder'].includes(body.action)) {
+        !['answer', 'grade', 'reorder'].includes(body.action)) {
       return Response.json({ error: 'Invalid update request.' }, { status: 400 })
     }
     return withCollection(async (collection) => {
@@ -84,7 +84,9 @@ export async function PATCH(request) {
       }
       let answers
       try {
-        answers = body.action === 'answer' ? saveAnswer(business, body) : reorderAnswers(business, body.order)
+        if (body.action === 'answer') answers = saveAnswer(business, body)
+        else if (body.action === 'grade') answers = gradeAnswer(business, body)
+        else answers = reorderAnswers(business, body.order)
       } catch (error) {
         return Response.json({ error: error.message }, { status: 400 })
       }

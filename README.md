@@ -6,7 +6,9 @@ Premium business-learning platform built with Next.js, local auth, and Railway-r
 
 The public pricing section describes planned plans, not active checkout. The Next.js application does not yet implement recurring PayPal subscriptions, AI generation and grading, or scheduled email sequences. An AI provider must be selected before the AI features can be enabled.
 
-Signed-in users can open **Business titles** from the admin page to create personal titles, answer sample questions one at a time, assign a required grade to each saved answer, reorder answers, and view grade totals and averages. Answers and rankings are saved in MongoDB. Existing ungraded answers remain visible and are excluded from grade totals and averages until graded. Only the first ten questions have sample examples; the remaining questions explicitly indicate that an example is unavailable. The admin content-management buttons are not yet implemented.
+Signed-in users can open **Business titles** from the admin page to create personal titles, answer sample questions one at a time, assign grades on the Grade page, reorder answers, and view grade totals and averages. Answers, grades, and rankings are saved in MongoDB. Ungraded answers remain visible and are excluded from grade totals and averages until graded. Only the first ten questions have sample examples; the remaining questions explicitly indicate that an example is unavailable. The admin content-management buttons are not yet implemented.
+
+On the Rated page, changes to answer order are drafts until **Save ranking** is selected. Drafts remain while navigating between dashboard views but are lost on reload or logout.
 
 Paid plan question limits apply to the entire subscription. Pro is $436 per year; the Member, Member-Bonus, and Pro-Bonus plans are monthly.
 
@@ -46,6 +48,10 @@ Password reset requires `MONGODB_URI`, `RESEND_API_KEY`, `RESEND_FROM`, and a pu
 ## Deployment
 
 The project includes a Railway configuration and Dockerfile for containerized deployment.
+
+The application sends HSTS with a one-day lifetime for each HTTPS hostname. It does not include subdomains or request browser preload. Browsers ignore HSTS received over HTTP; the hosting layer redirects HTTP requests to HTTPS.
+
+Responses also disable MIME sniffing and framing, omit the Next.js `X-Powered-By` header, and use a Content Security Policy that permits the homepage's Unsplash images and uptime badge. The policy allows inline scripts and styles for Next.js compatibility, so it is not a strict nonce-based XSS defense. New external resources may require updating the policy.
 
 ## PayPal Sandbox testing
 

@@ -491,6 +491,29 @@ input {
   color: var(--black);
 }
 
+.business-introduction {
+  margin-top: 52px;
+  padding: clamp(24px, 4vw, 44px);
+  border: 1px solid rgba(11, 45, 61, 0.1);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.business-introduction-copy {
+  max-width: 76ch;
+}
+
+.business-introduction-copy h3 {
+  margin: 28px 0 8px;
+  color: var(--navy);
+}
+
+.business-introduction-copy p {
+  margin: 0;
+  color: #233d4a;
+  line-height: 1.75;
+}
+
 .center-heading {
   text-align: center;
 }

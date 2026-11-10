@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { gradeSummary, questionAt, reorderAnswers, saveAnswer, validateTitle } from '../lib/business-workflow.js'
+import { gradeAnswer, gradeSummary, questionAt, rankingDraft, reorderAnswers, saveAnswer, validateTitle } from '../lib/business-workflow.js'
 
 test('titles and answers are validated and saved by question', () => {
   assert.equal(validateTitle('  My business  '), 'My business')
@@ -11,7 +11,22 @@ test('titles and answers are validated and saved by question', () => {
   assert.deepEqual(business.answers, [{ questionIndex: 0, text: 'Updated', grade: 'B' }])
   assert.throws(() => saveAnswer(business, { questionIndex: 99, text: 'No', grade: 'A' }), /Invalid question/)
   assert.throws(() => saveAnswer(business, { questionIndex: 0, text: 'No', grade: 'Z' }), /valid grade/)
-  assert.throws(() => saveAnswer(business, { questionIndex: 0, text: 'No', grade: null }), /valid grade/)
+  business.answers = saveAnswer(business, { questionIndex: 1, text: 'Ungraded' })
+  assert.equal(business.answers[1].grade, null)
+  business.answers = saveAnswer(business, { questionIndex: 0, text: 'Edited without grade' })
+  assert.equal(business.answers[0].grade, 'B')
+})
+
+test('grades can be assigned and updated without changing answer order or text', () => {
+  const business = { answers: [{ questionIndex: 3, text: 'First', grade: null }, { questionIndex: 0, text: 'Second', grade: 'B' }] }
+  business.answers = gradeAnswer(business, { questionIndex: 3, grade: 'A' })
+  assert.deepEqual(business.answers, [{ questionIndex: 3, text: 'First', grade: 'A' }, { questionIndex: 0, text: 'Second', grade: 'B' }])
+  assert.deepEqual(gradeSummary(business.answers), { total: 7, count: 2, average: 3.5 })
+  business.answers = gradeAnswer(business, { questionIndex: 0, grade: 'F' })
+  assert.deepEqual(gradeSummary(business.answers), { total: 4, count: 2, average: 2 })
+  assert.throws(() => gradeAnswer(business, { questionIndex: 1, grade: 'A' }), /Save an answer/)
+  assert.throws(() => gradeAnswer(business, { questionIndex: 0, grade: null }), /valid grade/)
+  assert.throws(() => gradeAnswer(business, { questionIndex: 0, grade: 'Z' }), /valid grade/)
 })
 
 test('grades include F and ignore ungraded answers', () => {
@@ -26,6 +41,13 @@ test('answer ranking requires an exact permutation', () => {
   assert.throws(() => reorderAnswers(business, [1, 1]), /invalid/)
   assert.throws(() => reorderAnswers(business, [1]), /invalid/)
   assert.throws(() => reorderAnswers(business, [1, 4]), /invalid/)
+})
+
+test('ranking drafts retain their order and include newly saved answers', () => {
+  const answers = [{ questionIndex: 1 }, { questionIndex: 3 }, { questionIndex: 5 }]
+  assert.deepEqual(rankingDraft(answers), [1, 3, 5])
+  assert.deepEqual(rankingDraft(answers, [3, 1]), [3, 1, 5])
+  assert.deepEqual(rankingDraft(answers, [3, 9, 1]), [3, 1, 5])
 })
 
 test('questions without a corresponding sample example do not invent one', () => {

@@ -3,7 +3,12 @@ import './globals.css'
 export const metadata = {
   title: 'Kno U Kno | Business Learning Platform',
   description:
-    'Learn how to start, manage, and grow a business with practical AI-guided lessons, tools, pricing, and business planning guidance.',
+    'Learn how to start, manage, and grow a business with practical questions, examples, and business planning guidance.',
+  verification: {
+    other: {
+      'isitdown-verification': '2a0905e9b51432303d3a644040ec8a9e',
+    },
+  },
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },

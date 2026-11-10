@@ -40,8 +40,8 @@ export default function HomePage() {
             <h1>Start, manage, and grow a business with practical learning.</h1>
             <p className="lead">
               Kno U Kno helps entrepreneurs learn how to start a business, manage day-to-day operations,
-              and make money with a smart, disciplined system. The platform uses AI-generated prompts,
-              examples, dashboards, and scoring tools to help people learn, plan, and improve business decisions.
+              and make decisions with a thoughtful, disciplined plan. Explore prepared questions,
+              examples, dashboards, and scoring tools to develop your own business ideas.
             </p>
             <div className="cta-row">
               <Link href="/register" className="primary-button">
@@ -67,8 +67,8 @@ export default function HomePage() {
 
         <section className="trust-strip" aria-label="Platform highlights">
           <div>
-            <strong>3,000+</strong>
-            <span>business prompts</span>
+            <strong>20</strong>
+            <span>sample questions</span>
           </div>
           <div>
             <strong>24/7</strong>
@@ -79,7 +79,7 @@ export default function HomePage() {
             <span>growth system</span>
           </div>
           <div>
-            <strong>AI guided</strong>
+            <strong>Self guided</strong>
             <span>business learning</span>
           </div>
         </section>
@@ -94,7 +94,7 @@ export default function HomePage() {
         <section className="feature-grid">
           <article className="info-card feature-tall">
             <p className="eyebrow">Learning</p>
-            <h3>AI business prompts</h3>
+            <h3>Business prompts</h3>
             <p>Practice real-world decision making with questions designed to build operational clarity.</p>
           </article>
           <article className="info-card feature-tall">
@@ -131,6 +131,96 @@ export default function HomePage() {
               <h3>Improve</h3>
               <p>Track grades, ratings, and averages to strengthen your business decisions over time.</p>
             </div>
+          </div>
+        </section>
+
+        <section className="business-introduction" aria-labelledby="business-introduction-title">
+          <div className="section-heading">
+            <p className="eyebrow">Your business journey</p>
+            <h2 id="business-introduction-title">From the first idea to a working business</h2>
+          </div>
+          <div className="business-introduction-copy">
+            <h3>Start with a clear idea</h3>
+            <p>
+              Starting a business means turning an idea into a service or product that people value.
+              Kno U Kno gives you a place to think through the decisions involved, from your first
+              questions to the work of serving customers. Begin by describing what you want to offer,
+              who may need it, and why they would choose it. Consider what you know already and what
+              you still need to learn. A clear purpose gives your research direction, but it does not
+              need to be perfect. As you gather information, you can revisit your answers and make
+              your plan more specific.
+            </p>
+            <h3>Understand the legal foundations</h3>
+            <p>
+              Before opening, investigate the rules that apply to your business and where you intend
+              to operate. Your business structure, registration, licenses, taxes, insurance, and record
+              keeping may all affect what you need to do. Requirements vary by location and industry,
+              so identify the agencies and qualified professionals who can help you confirm them.
+              Think about contracts, safety, privacy, and the responsibilities you may have to customers
+              and workers. Make a list of the decisions, deadlines, and costs you discover. The questions
+              on this site are learning prompts, not legal, tax, or financial advice.
+            </p>
+            <h3>Research your customers and market</h3>
+            <p>
+              A useful idea solves a problem for real people. Define the customers you hope to reach
+              and consider what they need, how they currently meet that need, and what matters most
+              when they decide to buy. Study similar businesses and look for gaps you can address.
+              Talk with potential customers, observe their habits, and test your assumptions on a small
+              scale before committing substantial resources. Separate what people say they want from
+              what they are willing to pay for. Record your findings and use them to refine your offer,
+              rather than relying only on enthusiasm for the idea.
+            </p>
+            <h3>Choose a location that fits</h3>
+            <p>
+              Your location can influence who finds you, how you operate, and what it costs to serve
+              customers. A business might need a storefront, a home workspace, a shared facility, an
+              online presence, or a combination of these. Compare possible locations by accessibility,
+              visibility, customer demand, safety, space, transport, and ongoing expenses. Check zoning,
+              permits, lease terms, and any restrictions before making commitments. Consider whether
+              suppliers and employees can reach the location and whether it can support future changes.
+              The best choice is not always the busiest or least expensive; it is the one that fits
+              your customers and business model.
+            </p>
+            <h3>Plan the money and daily work</h3>
+            <p>
+              A business needs a practical way to earn enough to cover its costs and keep operating.
+              Estimate startup expenses, ongoing bills, inventory, equipment, and the time needed to
+              deliver your offer. Set a price that accounts for costs, customer value, and the market.
+              Think about cash flow as well as profit: money may leave your account before customers
+              pay you. Plan how you will track income, expenses, and important records, and prepare
+              for unexpected costs. Then describe the everyday steps needed to deliver consistently,
+              from receiving an order to following up after the sale.
+            </p>
+            <h3>Build the right team</h3>
+            <p>
+              As your business grows, decide which work you can do yourself and where you need help.
+              Define the responsibilities, skills, availability, and experience each role requires.
+              Consider whether you need employees, professional advisers, or outside service providers,
+              and investigate the legal obligations that apply to each arrangement. Plan how you will
+              recruit fairly, train people, communicate expectations, and provide the tools they need.
+              Hiring is more than filling a position: the people you work with influence customer
+              experience, reliability, and the culture of your business. Review roles as the work changes.
+            </p>
+            <h3>Serve people and improve</h3>
+            <p>
+              Customers are more than a number in a sales report. Consider how people first hear about
+              your business, what makes them comfortable choosing you, and what happens when they need
+              help. Clear information, respectful service, reliable delivery, and a thoughtful response
+              to problems can help build trust. Ask for feedback and look for patterns without assuming
+              every customer wants the same thing. Track the measures that matter to your goals, such
+              as repeat visits, costs, or satisfaction. Use what you learn to improve the offer and
+              the systems behind it, while keeping your promises realistic.
+            </p>
+            <h3>Work through the questions</h3>
+            <p>
+              Use the business dashboard to save a title and work through prepared questions one at a
+              time. Examples illustrate a question in another way; your answer should reflect your own
+              business, research, and judgment. Save each answer so you can return to it later, then
+              assign a grade on the Grade page. You can review your total and average or reorder your
+              answers by importance. Some questions do not yet have an example, and the current set
+              is a starting point rather than a complete course. Revisit your decisions as you learn,
+              and seek professional guidance when your situation calls for it.
+            </p>
           </div>
         </section>
 
@@ -172,7 +262,7 @@ export default function HomePage() {
         <section className="panel-grid">
           <div className="sub-panel">
             <div className="panel-head">
-              <p className="eyebrow">AI questions</p>
+              <p className="eyebrow">Sample questions</p>
               <h3>Business growth prompts</h3>
             </div>
             <div className="qa-list">
@@ -240,8 +330,6 @@ export default function HomePage() {
             alt="Uptime monitored by IsItDown.now"
             width="160"
             height="28"
-            loading="lazy"
-            referrerPolicy="no-referrer"
           />
         </a>
       </footer>
