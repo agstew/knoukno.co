@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { gradeAnswer, gradeSummary, questionAt, rankingDraft, reorderAnswers, saveAnswer, validateTitle } from '../lib/business-workflow.js'
+import { aiExamples, aiQuestions } from '../lib/site-data.js'
 
 test('titles and answers are validated and saved by question', () => {
   assert.equal(validateTitle('  My business  '), 'My business')
@@ -50,7 +51,12 @@ test('ranking drafts retain their order and include newly saved answers', () => 
   assert.deepEqual(rankingDraft(answers, [3, 9, 1]), [3, 1, 5])
 })
 
-test('questions without a corresponding sample example do not invent one', () => {
-  assert.ok(questionAt(0).example)
-  assert.equal(questionAt(19).example, null)
+test('every prepared question has a corresponding example', () => {
+  assert.equal(aiQuestions.length, 20)
+  assert.equal(aiExamples.length, aiQuestions.length)
+  for (let index = 0; index < aiQuestions.length; index += 1) {
+    assert.equal(questionAt(index).question, aiQuestions[index])
+    assert.ok(questionAt(index).example?.trim(), `Missing example for question ${index + 1}`)
+  }
+  assert.equal(questionAt(aiQuestions.length).example, null)
 })

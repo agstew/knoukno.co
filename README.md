@@ -6,7 +6,7 @@ Premium business-learning platform built with Next.js, local auth, and Railway-r
 
 The public pricing section describes planned plans, not active checkout. The Next.js application does not yet implement recurring PayPal subscriptions, AI generation and grading, or scheduled email sequences. An AI provider must be selected before the AI features can be enabled.
 
-Signed-in users can open **Business titles** from the admin page to create personal titles, answer sample questions one at a time, assign grades on the Grade page, reorder answers, and view grade totals and averages. Answers, grades, and rankings are saved in MongoDB. Ungraded answers remain visible and are excluded from grade totals and averages until graded. Only the first ten questions have sample examples; the remaining questions explicitly indicate that an example is unavailable. The admin content-management buttons are not yet implemented.
+Signed-in users can open **Business titles** from the admin page to create personal titles, answer sample questions one at a time, assign grades on the Grade page, reorder answers, and view grade totals and averages. Answers, grades, and rankings are saved in MongoDB. Ungraded answers remain visible and are excluded from grade totals and averages until graded. Each of the 20 prepared sample questions has an example. The admin content-management buttons are not yet implemented.
 
 On the Rated page, changes to answer order are drafts until **Save ranking** is selected. Drafts remain while navigating between dashboard views but are lost on reload or logout.
 
