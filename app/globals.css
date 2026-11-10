@@ -802,6 +802,45 @@ input {
   padding-top: 36px;
 }
 
+.business-print-report {
+  display: none;
+}
+
+@media print {
+  body:has(.business-print-report) {
+    background: #fff;
+  }
+
+  .page-shell:has(.business-print-report) {
+    display: block;
+    width: auto;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    color: #000;
+    background: #fff;
+  }
+
+  .page-shell:has(.business-print-report) .business-site-header,
+  .page-shell:has(.business-print-report) .business-workflow {
+    display: none;
+  }
+
+  .business-print-report {
+    display: block;
+    color: #000;
+  }
+
+  .business-print-report li {
+    break-inside: avoid;
+  }
+
+  .business-print-answer {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+}
+
 .business-card {
   padding: 28px 24px;
   border: 1px solid rgba(11, 45, 61, 0.15);

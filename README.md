@@ -10,6 +10,8 @@ Signed-in users can open **Business titles** from the admin page to create perso
 
 On the Rated page, changes to answer order are drafts until **Save ranking** is selected. Drafts remain while navigating between dashboard views but are lost on reload or logout.
 
+The business dashboard's **Print saved answers** button opens the browser print dialog for a report containing saved answers in saved ranking order, grades, total, and average. Unsaved answer edits and ranking drafts are not included. The browser can also save the report as a PDF.
+
 Paid plan question limits apply to the entire subscription. Pro is $436 per year; the Member, Member-Bonus, and Pro-Bonus plans are monthly.
 
 ## Local development

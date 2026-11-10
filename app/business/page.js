@@ -193,6 +193,8 @@ export default function BusinessPage() {
               <p>Open the questions and examples to write your answers, then assign grades on the Grade page.</p>
               <button type="button" onClick={() => changeView('questions')}>Questions and examples</button>
               <button type="button" onClick={() => changeView('tasks')}>Tasks</button>
+              <button type="button" onClick={() => window.print()}>Print saved answers</button>
+              <p>The print report includes saved answers and ranking, not unsaved changes.</p>
             </>}
             {view === 'tasks' && <PersonalTasks key={business.id} business={business} />}
             {view === 'questions' && <>
@@ -246,6 +248,20 @@ export default function BusinessPage() {
           </section>
         ) : <p>Select a business title first.</p>}
       </main>
+      {business && <section className="business-print-report" aria-label="Saved business answers">
+        <h1>{business.title}</h1>
+        <h2>Saved answers</h2>
+        <p>Total grade points: {summary.total} ({summary.count} graded answers)</p>
+        <p>{summary.average === null ? 'No graded answers yet.' : `Average grade points: ${summary.average.toFixed(2)} / 4`}</p>
+        <p>Answers are listed in saved ranking order. Ungraded answers are excluded from the total and average.</p>
+        {business.answers.length === 0 ? <p>No saved answers yet.</p> : <ol>
+          {business.answers.map((answer) => <li key={answer.questionIndex}>
+            <h3>Question {answer.questionIndex + 1}: {questionAt(answer.questionIndex).question}</h3>
+            <p className="business-print-answer">{answer.text}</p>
+            <p>Grade: {answer.grade ? `${answer.grade} = ${gradePoints[answer.grade]}` : 'Not graded'}</p>
+          </li>)}
+        </ol>}
+      </section>}
     </div>
   )
 }
