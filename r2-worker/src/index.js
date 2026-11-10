@@ -1,12 +1,12 @@
 import { fromHono } from "chanfana";
 import { Hono } from "hono";
-import { TaskCreate } from "./endpoints/taskCreate";
-import { TaskDelete } from "./endpoints/taskDelete";
-import { TaskFetch } from "./endpoints/taskFetch";
-import { TaskList } from "./endpoints/taskList";
+import { TaskCreate } from "./endpoints/taskCreate.js";
+import { TaskDelete } from "./endpoints/taskDelete.js";
+import { TaskFetch } from "./endpoints/taskFetch.js";
+import { TaskList } from "./endpoints/taskList.js";
 
 // Start a Hono app
-const app = new Hono<{ Bindings: Env }>();
+const app = new Hono();
 
 // Setup OpenAPI registry
 const openapi = fromHono(app, {

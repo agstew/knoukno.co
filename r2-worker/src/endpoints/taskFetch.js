@@ -1,6 +1,6 @@
 import { NotFoundException, OpenAPIRoute } from "chanfana";
 import { z } from "zod";
-import { type AppContext, Task } from "../types";
+import { Task } from "../types.js";
 
 export class TaskFetch extends OpenAPIRoute {
 	schema = {
@@ -26,9 +26,9 @@ export class TaskFetch extends OpenAPIRoute {
 		},
 	};
 
-	async handle(c: AppContext) {
+	async handle(c) {
 		// Get validated data
-		const data = await this.getValidatedData<typeof this.schema>();
+		const data = await this.getValidatedData();
 
 		// Retrieve the validated slug
 		const { taskSlug } = data.params;

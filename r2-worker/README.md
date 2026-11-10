@@ -14,7 +14,7 @@ This is an example project made to be used as a quick start into building OpenAP
 
 ## Project structure
 
-1. Your main router is defined in `src/index.ts`.
+1. Your main router is defined in `src/index.js`.
 2. Each endpoint has its own file in `src/endpoints/`.
 3. For more information read the [chanfana documentation](https://chanfana.pages.dev/) and [Hono documentation](https://hono.dev/docs).
 
