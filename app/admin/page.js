@@ -186,9 +186,9 @@ export default function AdminPage() {
           )}
         </section>
 
-        <section className="admin-detail-grid">
+        {currentSet && <section className="admin-detail-grid">
           <section className="question-list-panel">
-            <h2>{currentSet ? 'Personal sample question set' : 'Prepared sample questions'}</h2>
+            <h2>Personal sample question set</h2>
             <ul>
               {questions.map((question, index) => (
                 <li key={question}>
@@ -197,7 +197,7 @@ export default function AdminPage() {
               ))}
             </ul>
           </section>
-        </section>
+        </section>}
       </main>
       <section className="admin-print-report" aria-label="Prepared question summary">
         <h1>Prepared business questions</h1>
