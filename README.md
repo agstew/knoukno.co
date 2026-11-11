@@ -4,7 +4,7 @@ Premium business-learning platform built with Next.js, local auth, and Railway-r
 
 ## Implementation status
 
-The public pricing section describes planned plans, not active checkout or an active free trial. Its registration button provides access to the current sample questions; paid checkout buttons remain disabled. The Next.js application does not yet implement recurring PayPal subscriptions, AI generation and grading, or scheduled email sequences. An AI provider must be selected before the AI features can be enabled.
+The free trial can be started once per account from the pricing page. It provides five prepared question-example pairs and accepts saved answers for three days from the moment the user starts it. After expiry, users can view and print saved answers but cannot edit them. This is separate from the existing sample dashboard; it does not generate AI questions. Paid checkout buttons remain disabled. The Next.js application does not yet implement recurring PayPal subscriptions, AI generation and grading, or scheduled email sequences.
 
 Signed-in users can open **Business titles** from the admin page to create personal titles, answer sample questions one at a time, assign grades on the Grade page, reorder answers, and view grade totals and averages. Answers, grades, and rankings are saved in MongoDB. Ungraded answers remain visible and are excluded from grade totals and averages until graded. Each of the 20 prepared sample questions has an example.
 

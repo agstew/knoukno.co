@@ -2,14 +2,19 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import { loginUser } from '../../lib/auth-client'
+import { useEffect, useState } from 'react'
+import { authDestination, authLink, loginUser } from '../../lib/auth-client'
 
 export default function LoginPage() {
   const router = useRouter()
   const [form, setForm] = useState({ email: '', password: '' })
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [registerLink, setRegisterLink] = useState('/register')
+
+  useEffect(() => {
+    setRegisterLink(authLink('/register', window.location.search))
+  }, [])
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -18,7 +23,7 @@ export default function LoginPage() {
 
     try {
       await loginUser(form)
-      router.push('/admin')
+      router.push(authDestination(window.location.search))
     } catch (submitError) {
       setError(submitError.message)
     } finally {
@@ -34,7 +39,7 @@ export default function LoginPage() {
         </div>
         <nav className="main-nav" aria-label="Main navigation">
           <Link href="/">Home</Link>
-          <Link href="/register">Register</Link>
+          <Link href={registerLink}>Register</Link>
         </nav>
       </header>
 
@@ -80,7 +85,7 @@ export default function LoginPage() {
           </form>
 
           <p className="auth-switch">
-            Need an account? <Link href="/register">Create one</Link>
+            Need an account? <Link href={registerLink}>Create one</Link>
           </p>
         </section>
       </main>
