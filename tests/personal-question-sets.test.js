@@ -3,10 +3,10 @@ import test from 'node:test'
 import { sameQuestions, sampleQuestions, validSampleSetId } from '../lib/personal-question-sets.js'
 import { aiQuestions } from '../lib/site-data.js'
 
-test('sample sets contain the existing prepared questions without mutating them', () => {
+test('new sample sets contain five existing questions without mutating them', () => {
   const questions = sampleQuestions()
-  assert.deepEqual(questions, aiQuestions)
-  assert.equal(questions.length, 20)
+  assert.deepEqual(questions, aiQuestions.slice(0, 5))
+  assert.equal(questions.length, 5)
   questions.pop()
   assert.equal(aiQuestions.length, 20)
 })

@@ -10,7 +10,7 @@ Signed-in users can open **Business titles** from the admin page to create perso
 
 The Questions view displays numbered navigation in groups of five, alongside Previous and Next. Save an answer before changing questions.
 
-On the admin page, **Generate question set** creates a personal draft containing the 20 existing sample questions; it does not generate new AI questions or activate a paid tier. **Save all** saves that set in MongoDB, and the 50 most recent personal sets can be reopened. **Print summary** prints the currently displayed questions, including an unsaved draft if one is selected. **Delete** removes only the selected sample set after confirmation, without changing business answers or other sets. Generating the full paid-tier question sets is not yet implemented.
+On the admin page, **Generate question set** creates a personal draft containing five existing sample questions; it does not start a three-day trial or activate a paid tier. Previously saved sets are unchanged. **Save all** saves the set in MongoDB, and the 50 most recent personal sets can be reopened. **Print summary** prints the currently displayed questions, including an unsaved draft if one is selected. **Delete** removes only the selected sample set after confirmation, without changing business answers or other sets. Generating the full paid-tier question sets is not yet implemented.
 
 On the Rated page, changes to answer order are drafts until **Save ranking** is selected. Drafts remain while navigating between dashboard views but are lost on reload or logout.
 

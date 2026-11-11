@@ -178,7 +178,7 @@ export default function AdminPage() {
             <button type="button" disabled={!currentSet || currentSet.saved || busy || loadingSets} onClick={saveSet}>Save all</button>
             <button type="button" disabled={!currentSet || busy || loadingSets} onClick={deleteSet}>Delete</button>
           </div>
-          <p>Generate creates a personal set from the 20 existing sample questions, not a paid tier or AI-generated questions. Save all saves this sample set, not your business answers. Delete removes only the selected set. Paid tier question sets are not yet available.</p>
+          <p>Generate creates a personal set of five existing sample questions. It does not start a three-day trial or generate paid-tier questions. Save all saves this set, not your business answers. Delete removes only the selected set.</p>
           {message && <p role="status">{message}</p>}
           {error && <p role="alert">{error}</p>}
           {loadError && <p role="alert">Could not load saved sets: {loadError} <button type="button" disabled={busy} onClick={() => setReloadSets((value) => value + 1)}>Retry</button></p>}
