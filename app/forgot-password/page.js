@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
+import SiteNav from '../site-nav'
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('')
@@ -48,10 +49,7 @@ export default function ForgotPasswordPage() {
         <div className="brand-wordmark-card" aria-label="Kno U Kno brand">
           <span>Kno U Kno</span>
         </div>
-        <nav className="main-nav" aria-label="Main navigation">
-          <Link href="/">Home</Link>
-          <Link href="/login">Login</Link>
-        </nav>
+        <SiteNav />
       </header>
 
       <main className="auth-wrap">

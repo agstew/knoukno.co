@@ -20,6 +20,11 @@ $gold: #c5962f;
     padding: 0.5rem 0.2rem;
   }
   :global(.main-nav a:hover) { color: #075cae; }
+  :global(.main-nav .nav-logout) {
+    color: $ink;
+    border-color: #b7c8d8;
+    background: transparent;
+  }
   :global(.main-nav a:focus-visible),
   :global(.cta-row a:focus-visible) {
     outline: 3px solid $blue;

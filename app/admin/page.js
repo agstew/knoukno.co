@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { clearSession, fetchCurrentUser, getSession } from '../../lib/auth-client'
 import { sampleQuestions } from '../../lib/personal-question-sets'
 import { aiQuestions } from '../../lib/site-data'
+import SiteNav from '../site-nav'
 
 async function questionSetRequest(options = {}) {
   const token = getSession()?.token
@@ -135,11 +136,6 @@ export default function AdminPage() {
     }
   }
 
-  const handleLogout = () => {
-    clearSession()
-    router.replace('/login')
-  }
-
   if (loading || !user) {
     return null
   }
@@ -152,12 +148,7 @@ export default function AdminPage() {
         <Link href="/" className="brand-mark-wrap" aria-label="Kno U Kno home">
           <img src="/brand/logo-lockup.svg" alt="Kno U Kno" className="brand-lockup-image" />
         </Link>
-        <nav className="main-nav" aria-label="Main navigation">
-          <Link href="/">Home</Link>
-          <Link href="/business">Business titles</Link>
-          <Link href="/login">Login</Link>
-          <button type="button" className="nav-logout" onClick={handleLogout}>Logout</button>
-        </nav>
+        <SiteNav beforeLeave={() => !currentSet || currentSet.saved || window.confirm('Discard the unsaved sample set?')} />
       </header>
 
       <main className="admin-page">

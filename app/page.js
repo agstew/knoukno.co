@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { navItems, pricePlans, aiQuestions, aiExamples, clientAnswers } from '../lib/site-data'
+import { pricePlans, aiQuestions, aiExamples, clientAnswers } from '../lib/site-data'
+import SiteNav from './site-nav'
 import styles from './home.module.scss'
 
 const questionPageSize = 5
@@ -25,13 +26,7 @@ export default function HomePage() {
           <span className="brand-mini-wordmark">Kno U Kno</span>
         </Link>
 
-        <nav className="main-nav" aria-label="Main navigation">
-          {navItems.map((item) => (
-            <Link key={item.label} href={item.href}>
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <SiteNav />
       </header>
 
       <main>

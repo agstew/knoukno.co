@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useState } from 'react'
+import SiteNav from '../site-nav'
 
 export default function ResetPasswordPage() {
   const [password, setPassword] = useState('')
@@ -46,7 +47,7 @@ export default function ResetPasswordPage() {
     <div className="page-shell narrow-shell">
       <header className="site-header">
         <Link href="/" className="brand-wordmark-card">Kno U Kno</Link>
-        <nav className="main-nav" aria-label="Main navigation"><Link href="/login">Login</Link></nav>
+        <SiteNav />
       </header>
       <main className="auth-wrap">
         <section className="auth-card">

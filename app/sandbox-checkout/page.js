@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { getSession } from '../../lib/auth-client'
 import { pricePlans } from '../../lib/site-data'
+import SiteNav from '../site-nav'
 
 export default function SandboxCheckoutPage() {
   const [message, setMessage] = useState('')
@@ -49,7 +50,7 @@ export default function SandboxCheckoutPage() {
 
   return (
     <div className="page-shell narrow-shell">
-      <header className="site-header"><Link href="/" className="brand-mark-wrap">Kno U Kno</Link></header>
+      <header className="site-header"><Link href="/" className="brand-mark-wrap">Kno U Kno</Link><SiteNav /></header>
       <main className="business-workflow">
         <section className="business-card">
           <h1>PayPal Sandbox checkout</h1>

@@ -55,6 +55,8 @@ Password reset requires `MONGODB_URI`, `RESEND_API_KEY`, `RESEND_FROM`, and a pu
 
 The project includes a Railway configuration and Dockerfile for containerized deployment.
 
+Visitors can navigate to Home, Login, Register, and Price. Signed-in navigation opens business titles, the selected business dashboard, grades, rankings, and averages; when no business is selected, choose a title first. Logout ends the local session.
+
 The separate `/site-admin` page shows real counts and server configuration presence to one designated account. Sign in with an existing account and visit `/site-admin` to see its account ID, then set `ADMIN_USER_ID` to that UUID in the server environment. A non-default `JWT_SECRET` is also required; without either setting, administration fails closed. This read-only overview does not manage accounts, payments, emails, or AI generation. Never designate an account whose credentials you do not control.
 
 Live PayPal plan inspection requires the server-only `PAYPAL_LIVE_CLIENT_ID`, `PAYPAL_LIVE_CLIENT_SECRET`, `PAYPAL_LIVE_MEMBER_PLAN_ID`, and `PAYPAL_LIVE_PRO_PLAN_ID`. The Member plan must be an active USD $39 monthly plan and the Pro plan an active USD $436 yearly plan, each with a single indefinite regular billing cycle and no setup fee or tax. Plan inspection is read-only and does not enable checkout. Never commit credentials. Live checkout, verified payment events, paid access, renewals, and bonus purchases are not implemented.

@@ -6,12 +6,15 @@ import { useCallback, useEffect, useState } from 'react'
 import { clearSession, getSession } from '../../lib/auth-client'
 import { gradePoints, gradeSummary, questionAt, questionPageIndices, rankingDraft } from '../../lib/business-workflow'
 import { aiQuestions } from '../../lib/site-data'
+import { businessViewFromSearch } from '../../lib/navigation'
+import SiteNav from '../site-nav'
 
 export default function BusinessPage() {
   const router = useRouter()
   const [businesses, setBusinesses] = useState([])
   const [selectedId, setSelectedId] = useState(null)
   const [view, setView] = useState('titles')
+  const [pendingView, setPendingView] = useState('dashboard')
   const [title, setTitle] = useState('')
   const [questionIndex, setQuestionIndex] = useState(0)
   const [answerText, setAnswerText] = useState('')
@@ -26,6 +29,11 @@ export default function BusinessPage() {
   const rankedAnswers = business ? rankingOrder.map((index) => business.answers.find((answer) => answer.questionIndex === index)) : []
   const rankingChanged = business && rankingOrder.some((index, position) => index !== business.answers[position].questionIndex)
   const hasRankingDrafts = Object.keys(rankingDrafts).length > 0
+
+  useEffect(() => {
+    const requestedView = businessViewFromSearch(window.location.search)
+    if (requestedView !== 'titles') setPendingView(requestedView)
+  }, [])
 
   const request = useCallback(async (method, body) => {
     const token = getSession()?.token
@@ -144,22 +152,24 @@ export default function BusinessPage() {
     setView(nextView)
   }
 
+  function navigateBusiness(nextView) {
+    if (nextView !== 'titles' && !business) {
+      setPendingView(nextView)
+      setError('')
+      setNotice('Select a business title to continue.')
+      setView('titles')
+      return
+    }
+    changeView(nextView)
+  }
+
   const summary = gradeSummary(business?.answers || [])
 
   return (
     <div className="page-shell narrow-shell">
       <header className="site-header business-site-header">
         <Link href="/" className="brand-mark-wrap" onClick={(event) => { if (!confirmLeave()) event.preventDefault() }}>Kno U Kno</Link>
-        <nav className="main-nav business-nav" aria-label="Business navigation">
-          <button type="button" onClick={() => changeView('titles')}>Title</button>
-          <button type="button" disabled={!business} onClick={() => changeView('dashboard')}>Dashboard</button>
-          <button type="button" disabled={!business} onClick={() => changeView('questions')}>Questions</button>
-          <button type="button" disabled={!business} onClick={() => changeView('tasks')}>Tasks</button>
-          <button type="button" disabled={!business} onClick={() => changeView('grade')}>Grade</button>
-          <button type="button" disabled={!business} onClick={() => changeView('rated')}>Rated</button>
-          <button type="button" disabled={!business} onClick={() => changeView('average')}>Average</button>
-          <button type="button" className="nav-logout" onClick={() => { if (confirmLeave()) { clearSession(); router.replace('/login') } }}>Logout</button>
-        </nav>
+        <SiteNav onBusinessView={navigateBusiness} beforeLeave={confirmLeave} />
       </header>
 
       <main className="business-workflow">
@@ -174,11 +184,12 @@ export default function BusinessPage() {
               <button type="submit" disabled={busy}>Save title</button>
             </form>
             <h2>Your titles</h2>
+            {pendingView !== 'dashboard' && <p>Select a business title to open {pendingView}.</p>}
             {businesses.length === 0 ? <p>No business titles yet.</p> : (
               <ul className="business-list">
                 {businesses.map((item) => (
                   <li key={item.id}>
-                    <button type="button" onClick={() => { setSelectedId(item.id); setQuestionIndex(0); changeView('dashboard') }}>
+                    <button type="button" onClick={() => { setSelectedId(item.id); setQuestionIndex(0); changeView(pendingView); setPendingView('dashboard') }}>
                       {item.title}
                     </button>
                   </li>

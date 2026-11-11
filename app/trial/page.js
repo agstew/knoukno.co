@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { clearSession, getSession } from '../../lib/auth-client'
+import SiteNav from '../site-nav'
 
 export default function FreeTrialPage() {
   const [signedIn, setSignedIn] = useState(false)
@@ -86,7 +87,7 @@ export default function FreeTrialPage() {
   }
 
   return <div className="page-shell narrow-shell">
-    <header className="site-header business-site-header"><Link href="/" className="brand-mark-wrap">Kno U Kno</Link></header>
+    <header className="site-header business-site-header"><Link href="/" className="brand-mark-wrap">Kno U Kno</Link><SiteNav beforeLeave={() => !trial || answer === (trial.answers?.[index] || '') || window.confirm('You have an unsaved answer. Leave without saving?')} /></header>
     <main className="business-workflow">
       <section className="business-card">
         <h1>Free three-day trial</h1>

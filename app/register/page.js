@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { authDestination, authLink, registerUser } from '../../lib/auth-client'
+import SiteNav from '../site-nav'
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -37,10 +38,7 @@ export default function RegisterPage() {
         <div className="brand-wordmark-card" aria-label="Kno U Kno brand">
           <span>Kno U Kno</span>
         </div>
-        <nav className="main-nav" aria-label="Main navigation">
-          <Link href="/">Home</Link>
-          <Link href={loginLink}>Login</Link>
-        </nav>
+        <SiteNav loginHref={loginLink} />
       </header>
 
       <main className="auth-wrap">

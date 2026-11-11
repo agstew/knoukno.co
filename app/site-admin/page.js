@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { clearSession, getSession } from '../../lib/auth-client'
+import SiteNav from '../site-nav'
 
 export default function SiteAdminPage() {
   const [overview, setOverview] = useState(null)
@@ -33,7 +34,7 @@ export default function SiteAdminPage() {
   }, [])
 
   return <div className="page-shell narrow-shell">
-    <header className="site-header"><Link href="/" className="brand-mark-wrap">Kno U Kno</Link></header>
+    <header className="site-header"><Link href="/" className="brand-mark-wrap">Kno U Kno</Link><SiteNav /></header>
     <main className="business-workflow">
       <section className="business-card">
         <h1>Site administration</h1>

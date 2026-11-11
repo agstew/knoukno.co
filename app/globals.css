@@ -208,6 +208,16 @@ input {
   font-weight: 700;
 }
 
+.site-nav-link {
+  color: var(--white);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 .nav-logout {
   border: 1px solid rgba(255, 255, 255, 0.18);
   background: rgba(255, 255, 255, 0.06);
@@ -929,6 +939,7 @@ input {
 }
 
 .admin-site-header .main-nav a,
+.admin-site-header .site-nav-link,
 .admin-site-header .nav-logout {
   color: var(--navy);
 }
