@@ -4,12 +4,34 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { clearSession, fetchCurrentUser, getSession } from '../../lib/auth-client'
+import { sampleQuestions } from '../../lib/personal-question-sets'
 import { adminEmails, adminSummary, aiQuestions } from '../../lib/site-data'
+
+async function questionSetRequest(options = {}) {
+  const token = getSession()?.token
+  if (!token) throw new Error('Please sign in again.')
+  const response = await fetch('/api/question-sets', {
+    ...options,
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    cache: 'no-store',
+  })
+  const result = await response.json()
+  if (!response.ok) throw new Error(result.error || 'Unable to access your question sets.')
+  return result
+}
 
 export default function AdminPage() {
   const router = useRouter()
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [sets, setSets] = useState([])
+  const [currentSet, setCurrentSet] = useState(null)
+  const [saving, setSaving] = useState(false)
+  const [message, setMessage] = useState('')
+  const [error, setError] = useState('')
+  const [loadError, setLoadError] = useState('')
+  const [loadingSets, setLoadingSets] = useState(true)
+  const [reloadSets, setReloadSets] = useState(0)
 
   useEffect(() => {
     const loadUser = async () => {
@@ -39,6 +61,55 @@ export default function AdminPage() {
     loadUser()
   }, [router])
 
+  useEffect(() => {
+    if (!user) return
+    let active = true
+    setLoadingSets(true)
+    setLoadError('')
+    questionSetRequest()
+      .then(({ sets: savedSets }) => {
+        if (active) setSets(savedSets)
+      })
+      .catch((requestError) => {
+        if (active) setLoadError(requestError.message)
+      })
+      .finally(() => {
+        if (active) setLoadingSets(false)
+      })
+    return () => { active = false }
+  }, [user, reloadSets])
+
+  const generateSet = () => {
+    if (currentSet && !currentSet.saved && !window.confirm('Replace the unsaved sample set?')) return
+    setCurrentSet({ id: crypto.randomUUID(), questions: sampleQuestions(), saved: false })
+    setMessage('Sample set created. Select Save all to keep it.')
+    setError('')
+  }
+
+  const saveSet = async () => {
+    if (!currentSet || currentSet.saved || saving) return
+    setSaving(true)
+    setError('')
+    setMessage('')
+    try {
+      const { set } = await questionSetRequest({ method: 'POST', body: JSON.stringify({ id: currentSet.id, questions: currentSet.questions }) })
+      setCurrentSet({ ...set, saved: true })
+      setSets((previous) => [set, ...previous.filter((item) => item.id !== set.id)].slice(0, 50))
+      setMessage('Your sample question set was saved.')
+    } catch (requestError) {
+      setError(requestError.message)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const showSavedSet = (set) => {
+    if (currentSet && !currentSet.saved && !window.confirm('Discard the unsaved sample set?')) return
+    setCurrentSet({ ...set, saved: true })
+    setMessage('Showing your saved sample question set.')
+    setError('')
+  }
+
   const handleLogout = () => {
     clearSession()
     router.replace('/login')
@@ -47,6 +118,8 @@ export default function AdminPage() {
   if (loading || !user) {
     return null
   }
+
+  const questions = currentSet?.questions || aiQuestions
 
   return (
     <div className="page-shell narrow-shell">
@@ -75,12 +148,26 @@ export default function AdminPage() {
           <p className="lead">Welcome back, {user.fullName}. This dashboard manages question generation, summaries, and email updates.</p>
 
           <div className="admin-controls">
-            <button type="button" disabled>Generate question set</button>
+            <button type="button" disabled={saving || loadingSets} onClick={generateSet}>Generate question set</button>
             <button type="button" onClick={() => window.print()}>Print summary</button>
-            <button type="button" disabled>Save all</button>
+            <button type="button" disabled={!currentSet || currentSet.saved || saving || loadingSets} onClick={saveSet}>Save all</button>
             <button type="button" disabled>Delete</button>
           </div>
-          <p>Question generation, saving, and deletion are not yet available.</p>
+          <p>Generate creates a personal set from the 20 existing sample questions, not a paid tier or AI-generated questions. Save all saves this sample set, not your business answers. Delete is unavailable. Paid tier question sets are not yet available.</p>
+          {message && <p role="status">{message}</p>}
+          {error && <p role="alert">{error}</p>}
+          {loadError && <p role="alert">Could not load saved sets: {loadError} <button type="button" disabled={saving} onClick={() => setReloadSets((value) => value + 1)}>Retry</button></p>}
+          {sets.length > 0 && (
+            <div>
+              <h2>Your saved sample sets</h2>
+              <p>Showing up to 50 most recent sets.</p>
+              <ul>
+                {sets.map((set, index) => (
+                  <li key={set.id}><button type="button" disabled={saving} onClick={() => showSavedSet(set)}>Open saved set {index + 1}</button></li>
+                ))}
+              </ul>
+            </div>
+          )}
         </section>
 
         <section className="dashboard-grid">
@@ -125,9 +212,9 @@ export default function AdminPage() {
           </section>
 
           <section className="question-list-panel">
-            <h2>AI-generated business questions</h2>
+            <h2>{currentSet ? 'Personal sample question set' : 'Prepared sample questions'}</h2>
             <ul>
-              {aiQuestions.slice(0, 15).map((question, index) => (
+              {questions.map((question, index) => (
                 <li key={question}>
                   <span>{index + 1}.</span> {question}
                 </li>
@@ -138,9 +225,9 @@ export default function AdminPage() {
       </main>
       <section className="admin-print-report" aria-label="Prepared question summary">
         <h1>Prepared business questions</h1>
-        <p>{aiQuestions.length} sample questions</p>
+        <p>{questions.length} sample questions{currentSet && !currentSet.saved ? ' (not saved)' : ''}</p>
         <ol>
-          {aiQuestions.map((question) => <li key={question}>{question}</li>)}
+          {questions.map((question) => <li key={question}>{question}</li>)}
         </ol>
       </section>
     </div>
