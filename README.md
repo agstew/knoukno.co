@@ -59,6 +59,8 @@ Live PayPal plan inspection requires the server-only `PAYPAL_LIVE_CLIENT_ID`, `P
 
 With these variables set securely in the environment, run `node scripts/inspect-live-paypal.js` to check both live plans without creating a subscription or charging a customer.
 
+The live PayPal helper also supports webhook signature verification using `PAYPAL_LIVE_WEBHOOK_ID`. No webhook listener or event processing is implemented yet; verification alone does not grant paid access.
+
 The application sends HSTS with a one-day lifetime for each HTTPS hostname. It does not include subdomains or request browser preload. Browsers ignore HSTS received over HTTP; the hosting layer redirects HTTP requests to HTTPS.
 
 The business dashboard includes private tasks for each signed-in user and business. Task records are stored in the separate R2 worker; business titles and answers remain in MongoDB. Configure the server-only `TASK_API_TOKEN` to match the worker secret. Never expose it to browser code. Tasks can be added, listed and deleted; list pages contain up to 20 tasks.
