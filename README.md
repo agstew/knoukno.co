@@ -16,7 +16,7 @@ On the Rated page, changes to answer order are drafts until **Save ranking** is 
 
 The business dashboard's **Print saved answers** button opens the browser print dialog for a report containing saved answers in saved ranking order, grades, total, and average. Unsaved answer edits and ranking drafts are not included. The browser can also save the report as a PDF.
 
-Planned paid plan question limits apply to the entire subscription. Member is $39 per month, Pro is $436 per year, and Pro-Bonus is $525.99 per year. Each bonus option adds 100 questions for a one-time $100 charge in addition to its recurring plan price. Member-Bonus is $139 for the first payment ($39 plus the one-time bonus), then $39 per month.
+Planned paid plan question limits apply to the entire subscription. Member is $39 per month, Pro is $436 per year, and Pro-Bonus is $436 per year. Each bonus option adds 100 questions for a one-time $100 charge in addition to its recurring plan price. Member-Bonus is $139 for the first payment ($39 plus the one-time bonus), then $39 per month.
 
 ## Local development
 
@@ -55,6 +55,10 @@ Password reset requires `MONGODB_URI`, `RESEND_API_KEY`, `RESEND_FROM`, and a pu
 
 The project includes a Railway configuration and Dockerfile for containerized deployment.
 
+Live PayPal plan inspection requires the server-only `PAYPAL_LIVE_CLIENT_ID`, `PAYPAL_LIVE_CLIENT_SECRET`, `PAYPAL_LIVE_MEMBER_PLAN_ID`, and `PAYPAL_LIVE_PRO_PLAN_ID`. The Member plan must be an active USD $39 monthly plan and the Pro plan an active USD $436 yearly plan, each with a single indefinite regular billing cycle and no setup fee or tax. Plan inspection is read-only and does not enable checkout. Never commit credentials. Live checkout, verified payment events, paid access, renewals, and bonus purchases are not implemented.
+
+With these variables set securely in the environment, run `node scripts/inspect-live-paypal.js` to check both live plans without creating a subscription or charging a customer.
+
 The application sends HSTS with a one-day lifetime for each HTTPS hostname. It does not include subdomains or request browser preload. Browsers ignore HSTS received over HTTP; the hosting layer redirects HTTP requests to HTTPS.
 
 The business dashboard includes private tasks for each signed-in user and business. Task records are stored in the separate R2 worker; business titles and answers remain in MongoDB. Configure the server-only `TASK_API_TOKEN` to match the worker secret. Never expose it to browser code. Tasks can be added, listed and deleted; list pages contain up to 20 tasks.
@@ -65,4 +69,4 @@ Responses also disable MIME sniffing and framing, omit the Next.js `X-Powered-By
 
 The local-only `/sandbox-checkout` page tests recurring subscriptions without enabling paid access. It is disabled in production, even if Sandbox credentials are configured. Sign in to a local account, use a PayPal Sandbox buyer account, and configure `.env.local` using `.env.example`. Never commit credentials.
 
-Create active Sandbox subscription plans with USD fixed prices and one indefinite regular billing cycle: Member and Member-Bonus at $39 monthly; Pro at $436 yearly; and Pro-Bonus at $525.99 yearly. Configure a one-time USD $100 setup fee for each bonus plan and no setup fee for the others. Do not configure a trial or tax. Set the corresponding `PAYPAL_SANDBOX_*_PLAN_ID` values. The server verifies each plan against the displayed recurring price, interval, and one-time bonus fee before sending the buyer to PayPal, and checks subscription status with PayPal on return. A sandbox subscription does not unlock features, enforce limits, or set up emails; live checkout remains unavailable.
+Create active Sandbox subscription plans with USD fixed prices and one indefinite regular billing cycle: Member and Member-Bonus at $39 monthly; Pro and Pro-Bonus at $436 yearly. Configure a one-time USD $100 setup fee for each bonus plan and no setup fee for the others. Do not configure a trial or tax. Set the corresponding `PAYPAL_SANDBOX_*_PLAN_ID` values. The server verifies each plan against the displayed recurring price, interval, and one-time bonus fee before sending the buyer to PayPal, and checks subscription status with PayPal on return. A sandbox subscription does not unlock features, enforce limits, or set up emails; live checkout remains unavailable.

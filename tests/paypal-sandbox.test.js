@@ -57,17 +57,17 @@ test('bonus plans require a one-time $100 fee and the correct base billing inter
   assert.throws(() => validatePlan({ ...bonusPlan, payment_preferences: { setup_fee: { currency_code: 'EUR', value: '100.00' } } }, member), /does not match/)
 
   const pro = expectedPlan('Pro-Bonus', env)
-  assert.equal(pro.amount, '525.99')
+  assert.equal(pro.amount, '436.00')
   assert.equal(pro.interval, 'YEAR')
   const proPlan = {
     ...bonusPlan,
     id: pro.id,
-    billing_cycles: [{ ...plan.billing_cycles[0], frequency: { interval_unit: 'YEAR', interval_count: 1 }, pricing_scheme: { fixed_price: { currency_code: 'USD', value: '525.99' } } }],
+    billing_cycles: [{ ...plan.billing_cycles[0], frequency: { interval_unit: 'YEAR', interval_count: 1 }, pricing_scheme: { fixed_price: { currency_code: 'USD', value: '436.00' } } }],
   }
   assert.doesNotThrow(() => validatePlan(proPlan, pro))
   assert.throws(() => validatePlan({
     ...proPlan,
-    billing_cycles: [{ ...proPlan.billing_cycles[0], pricing_scheme: { fixed_price: { currency_code: 'USD', value: '436.00' } } }],
+    billing_cycles: [{ ...proPlan.billing_cycles[0], pricing_scheme: { fixed_price: { currency_code: 'USD', value: '525.99' } } }],
   }, pro), /does not match/)
 })
 
