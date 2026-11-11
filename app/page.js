@@ -249,7 +249,10 @@ export default function HomePage() {
                 <p className="discount">{plan.discount}</p>
                 {plan.name === 'Free'
                   ? <Link href="/register" className={styles.planButton}>Register for sample access</Link>
-                  : <button type="button" className={styles.planButton} disabled aria-label={`${plan.name}: checkout unavailable`}>Buy now - unavailable</button>}
+                  : <>
+                    <button type="button" className={styles.planButton} disabled aria-label={`${plan.name}: checkout unavailable`}>Buy now &ndash; available</button>
+                    <p>PayPal checkout is not yet available.</p>
+                  </>}
               </article>
             ))}
           </div>
