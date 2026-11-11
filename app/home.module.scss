@@ -116,6 +116,10 @@ $gold: #c5962f;
   strong { line-height: 1.35; }
 }
 
+.home .paymentDetail {
+  color: #ffffff;
+}
+
 @media (max-width: 700px) {
   .home {
     :global(.site-header) { position: relative; top: auto; }

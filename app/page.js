@@ -231,12 +231,12 @@ export default function HomePage() {
                 </div>
 
                 <div className="price-line">
-                  {plan.firstPayment && <span>First payment </span>}
-                  <strong>{plan.firstPayment || plan.price}</strong>
+                  {plan.firstPayment && <span className={styles.paymentDetail}>First payment </span>}
+                  <strong className={plan.firstPayment ? styles.paymentDetail : undefined}>{plan.firstPayment || plan.price}</strong>
                 </div>
                 {plan.firstPayment
-                  ? <p>Includes {plan.setupFee} one-time bonus charge; then {plan.price} per month.</p>
-                  : plan.setupFee && <p>Plus {plan.setupFee} one-time bonus charge</p>}
+                  ? <p className={styles.paymentDetail}>Includes {plan.setupFee} one-time bonus charge; then {plan.price} per month.</p>
+                  : plan.setupFee && <p className={styles.paymentDetail}>Plus {plan.setupFee} one-time bonus charge</p>}
 
                 <p className="question-caption">{plan.questions}</p>
 
