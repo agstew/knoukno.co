@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 import { createSandboxSubscription, expectedPlan, getSandboxSubscription, sandboxConfig, validatePlan } from '../lib/paypal-sandbox.js'
+import { pricePlans } from '../lib/site-data.js'
 
 const env = {
   NODE_ENV: 'development',
@@ -45,7 +46,11 @@ test('bonus plans require a one-time $100 fee and the correct base billing inter
   const member = expectedPlan('Member-Bonus', env)
   const bonusPlan = { ...plan, id: member.id, payment_preferences: { setup_fee: { currency_code: 'USD', value: '100.00' } } }
   assert.equal(member.amount, '39.00')
+  assert.equal(member.setupFee, '100.00')
   assert.equal(member.interval, 'MONTH')
+  const memberDisplay = pricePlans.find((item) => item.name === 'Member-Bonus')
+  assert.equal(memberDisplay.firstPayment, '$139.00')
+  assert.equal(Number(memberDisplay.firstPayment.slice(1)), Number(member.amount) + Number(member.setupFee))
   assert.doesNotThrow(() => validatePlan(bonusPlan, member))
   assert.throws(() => validatePlan({ ...bonusPlan, payment_preferences: {} }, member), /does not match/)
   assert.throws(() => validatePlan({ ...bonusPlan, payment_preferences: { setup_fee: { currency_code: 'USD', value: '99.00' } } }, member), /does not match/)

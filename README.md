@@ -12,7 +12,7 @@ On the Rated page, changes to answer order are drafts until **Save ranking** is 
 
 The business dashboard's **Print saved answers** button opens the browser print dialog for a report containing saved answers in saved ranking order, grades, total, and average. Unsaved answer edits and ranking drafts are not included. The browser can also save the report as a PDF.
 
-Planned paid plan question limits apply to the entire subscription. Member is $39 per month, Pro is $436 per year, and Pro-Bonus is $525.99 per year. Each bonus option adds 100 questions for a one-time $100 charge in addition to its recurring plan price.
+Planned paid plan question limits apply to the entire subscription. Member is $39 per month, Pro is $436 per year, and Pro-Bonus is $525.99 per year. Each bonus option adds 100 questions for a one-time $100 charge in addition to its recurring plan price. Member-Bonus is $139 for the first payment ($39 plus the one-time bonus), then $39 per month.
 
 ## Local development
 

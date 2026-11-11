@@ -60,7 +60,7 @@ export default function SandboxCheckoutPage() {
             {pricePlans.filter((plan) => plan.name !== 'Free').map((plan) => (
               <li key={plan.name}>
                 {plan.name}: {plan.price} / {plan.period.toLowerCase()}{' '}
-                {plan.setupFee && <>plus {plan.setupFee} one time{' '}</>}
+                {plan.setupFee && <>plus {plan.setupFee} one time{plan.firstPayment && <> ({plan.firstPayment} first payment)</>}{' '}</>}
                 <button type="button" disabled={busy} onClick={() => start(plan.name)}>Test with PayPal</button>
               </li>
             ))}
