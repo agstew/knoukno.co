@@ -120,6 +120,32 @@ $gold: #c5962f;
   color: #ffffff;
 }
 
+.planButton {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto;
+  padding: 0.85rem 1rem;
+  border: 0;
+  border-radius: 12px;
+  background: #096ccc;
+  color: #fff;
+  font: inherit;
+  font-weight: 800;
+  text-align: center;
+}
+
+.planButton:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
+.planButton:disabled {
+  background: #425964;
+  color: #fff;
+  cursor: not-allowed;
+}
+
 @media (max-width: 700px) {
   .home {
     :global(.site-header) { position: relative; top: auto; }

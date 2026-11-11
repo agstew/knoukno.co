@@ -219,7 +219,7 @@ export default function HomePage() {
           <div className="section-heading center-heading">
             <p className="eyebrow">Planned pricing</p>
             <h2>Choose the tier that matches your business learning pace.</h2>
-            <p>These plans are not yet available for purchase. Question limits apply to the entire subscription, not each billing period.</p>
+            <p>The free trial and paid plans are not yet available. Register to use the current sample questions. Planned question limits apply to the entire subscription, not each billing period.</p>
           </div>
 
           <div className="pricing-grid">
@@ -247,6 +247,9 @@ export default function HomePage() {
                 </ul>
 
                 <p className="discount">{plan.discount}</p>
+                {plan.name === 'Free'
+                  ? <Link href="/register" className={styles.planButton}>Register for sample access</Link>
+                  : <button type="button" className={styles.planButton} disabled aria-label={`${plan.name}: checkout unavailable`}>Buy now - unavailable</button>}
               </article>
             ))}
           </div>
