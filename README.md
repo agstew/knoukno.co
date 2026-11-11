@@ -8,7 +8,7 @@ The public pricing section describes planned plans, not active checkout or an ac
 
 Signed-in users can open **Business titles** from the admin page to create personal titles, answer sample questions one at a time, assign grades on the Grade page, reorder answers, and view grade totals and averages. Answers, grades, and rankings are saved in MongoDB. Ungraded answers remain visible and are excluded from grade totals and averages until graded. Each of the 20 prepared sample questions has an example.
 
-On the admin page, **Generate question set** creates a personal draft containing the 20 existing sample questions; it does not generate new AI questions or activate a paid tier. **Save all** saves that set in MongoDB, and the 50 most recent personal sets can be reopened. **Print summary** prints the currently displayed questions, including an unsaved draft if one is selected. Deleting sets and generating the full paid-tier question sets are not yet implemented.
+On the admin page, **Generate question set** creates a personal draft containing the 20 existing sample questions; it does not generate new AI questions or activate a paid tier. **Save all** saves that set in MongoDB, and the 50 most recent personal sets can be reopened. **Print summary** prints the currently displayed questions, including an unsaved draft if one is selected. **Delete** removes only the selected sample set after confirmation, without changing business answers or other sets. Generating the full paid-tier question sets is not yet implemented.
 
 On the Rated page, changes to answer order are drafts until **Save ranking** is selected. Drafts remain while navigating between dashboard views but are lost on reload or logout.
 

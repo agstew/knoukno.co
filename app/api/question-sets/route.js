@@ -32,6 +32,15 @@ async function handle(request, action) {
   }
 }
 
+async function readBody(request) {
+  try {
+    return await request.json()
+  } catch (error) {
+    if (error instanceof SyntaxError) return null
+    throw error
+  }
+}
+
 export async function GET(request) {
   return handle(request, async (collection, user) => {
     const sets = await collection.find({ userId: user.id }, { projection: { _id: 0, userId: 0 } })
@@ -42,13 +51,7 @@ export async function GET(request) {
 
 export async function POST(request) {
   return handle(request, async (collection, user) => {
-    let body
-    try {
-      body = await request.json()
-    } catch (error) {
-      if (error instanceof SyntaxError) return Response.json({ error: 'Invalid request.' }, { status: 400 })
-      throw error
-    }
+    const body = await readBody(request)
     if (!validSampleSetId(body?.id)) {
       return Response.json({ error: 'Invalid question set.' }, { status: 400 })
     }
@@ -75,5 +78,19 @@ export async function POST(request) {
       return Response.json({ error: 'This set was already saved with different questions.' }, { status: 409 })
     }
     return Response.json({ set })
+  })
+}
+
+export async function DELETE(request) {
+  return handle(request, async (collection, user) => {
+    const body = await readBody(request)
+    if (!validSampleSetId(body?.id)) {
+      return Response.json({ error: 'Invalid question set.' }, { status: 400 })
+    }
+    const result = await collection.deleteOne({ _id: `${user.id}:${body.id}`, userId: user.id })
+    if (!result.deletedCount) {
+      return Response.json({ error: 'Question set not found.' }, { status: 404 })
+    }
+    return Response.json({ deleted: true })
   })
 }

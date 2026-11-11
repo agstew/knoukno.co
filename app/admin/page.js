@@ -27,11 +27,13 @@ export default function AdminPage() {
   const [sets, setSets] = useState([])
   const [currentSet, setCurrentSet] = useState(null)
   const [saving, setSaving] = useState(false)
+  const [deleting, setDeleting] = useState(false)
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
   const [loadError, setLoadError] = useState('')
   const [loadingSets, setLoadingSets] = useState(true)
   const [reloadSets, setReloadSets] = useState(0)
+  const busy = saving || deleting
 
   useEffect(() => {
     const loadUser = async () => {
@@ -110,6 +112,29 @@ export default function AdminPage() {
     setError('')
   }
 
+  const deleteSet = async () => {
+    if (!currentSet || busy || loadingSets) return
+    const prompt = currentSet.saved
+      ? 'Delete this saved sample set? Your business answers and other sets will not be deleted.'
+      : 'Discard this unsaved sample set?'
+    if (!window.confirm(prompt)) return
+    setDeleting(true)
+    setError('')
+    setMessage('')
+    try {
+      if (currentSet.saved) {
+        await questionSetRequest({ method: 'DELETE', body: JSON.stringify({ id: currentSet.id }) })
+        setSets((previous) => previous.filter((set) => set.id !== currentSet.id))
+      }
+      setCurrentSet(null)
+      setMessage(currentSet.saved ? 'Your selected sample set was deleted.' : 'The unsaved sample set was discarded.')
+    } catch (requestError) {
+      setError(requestError.message)
+    } finally {
+      setDeleting(false)
+    }
+  }
+
   const handleLogout = () => {
     clearSession()
     router.replace('/login')
@@ -148,22 +173,22 @@ export default function AdminPage() {
           <p className="lead">Welcome back, {user.fullName}. This dashboard manages question generation, summaries, and email updates.</p>
 
           <div className="admin-controls">
-            <button type="button" disabled={saving || loadingSets} onClick={generateSet}>Generate question set</button>
+            <button type="button" disabled={busy || loadingSets} onClick={generateSet}>Generate question set</button>
             <button type="button" onClick={() => window.print()}>Print summary</button>
-            <button type="button" disabled={!currentSet || currentSet.saved || saving || loadingSets} onClick={saveSet}>Save all</button>
-            <button type="button" disabled>Delete</button>
+            <button type="button" disabled={!currentSet || currentSet.saved || busy || loadingSets} onClick={saveSet}>Save all</button>
+            <button type="button" disabled={!currentSet || busy || loadingSets} onClick={deleteSet}>Delete</button>
           </div>
-          <p>Generate creates a personal set from the 20 existing sample questions, not a paid tier or AI-generated questions. Save all saves this sample set, not your business answers. Delete is unavailable. Paid tier question sets are not yet available.</p>
+          <p>Generate creates a personal set from the 20 existing sample questions, not a paid tier or AI-generated questions. Save all saves this sample set, not your business answers. Delete removes only the selected set. Paid tier question sets are not yet available.</p>
           {message && <p role="status">{message}</p>}
           {error && <p role="alert">{error}</p>}
-          {loadError && <p role="alert">Could not load saved sets: {loadError} <button type="button" disabled={saving} onClick={() => setReloadSets((value) => value + 1)}>Retry</button></p>}
+          {loadError && <p role="alert">Could not load saved sets: {loadError} <button type="button" disabled={busy} onClick={() => setReloadSets((value) => value + 1)}>Retry</button></p>}
           {sets.length > 0 && (
             <div>
               <h2>Your saved sample sets</h2>
               <p>Showing up to 50 most recent sets.</p>
               <ul>
                 {sets.map((set, index) => (
-                  <li key={set.id}><button type="button" disabled={saving} onClick={() => showSavedSet(set)}>Open saved set {index + 1}</button></li>
+                  <li key={set.id}><button type="button" disabled={busy} onClick={() => showSavedSet(set)}>Open saved set {index + 1}</button></li>
                 ))}
               </ul>
             </div>
