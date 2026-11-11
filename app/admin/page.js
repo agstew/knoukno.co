@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { clearSession, fetchCurrentUser, getSession } from '../../lib/auth-client'
 import { sampleQuestions } from '../../lib/personal-question-sets'
-import { adminEmails, adminSummary, aiQuestions } from '../../lib/site-data'
+import { aiQuestions } from '../../lib/site-data'
 
 async function questionSetRequest(options = {}) {
   const token = getSession()?.token
@@ -164,13 +164,13 @@ export default function AdminPage() {
         <section className="admin-panel">
           <div className="admin-panel-header">
             <div>
-              <p className="eyebrow">Admin dashboard</p>
-              <h1>AI business content manager</h1>
+              <p className="eyebrow">Your dashboard</p>
+              <h1>Business question sets</h1>
             </div>
-            <span className="status-pill">Live</span>
+            <span className="status-pill">Sample questions</span>
           </div>
 
-          <p className="lead">Welcome back, {user.fullName}. This dashboard manages question generation, summaries, and email updates.</p>
+          <p className="lead">Welcome back, {user.fullName}. Create and save your own sets of prepared sample questions.</p>
 
           <div className="admin-controls">
             <button type="button" disabled={busy || loadingSets} onClick={generateSet}>Generate question set</button>
@@ -195,47 +195,7 @@ export default function AdminPage() {
           )}
         </section>
 
-        <section className="dashboard-grid">
-          <article className="dashboard-card">
-            <p className="eyebrow">Performance</p>
-            <h3>Business readiness</h3>
-            <div className="stats-row">
-              <strong>94%</strong>
-              <span>System health</span>
-            </div>
-          </article>
-
-          <article className="dashboard-card">
-            <p className="eyebrow">Questions</p>
-            <h3>Prompt volume</h3>
-            <div className="stats-row">
-              <strong>1,240</strong>
-              <span>Generated this quarter</span>
-            </div>
-          </article>
-
-          <article className="dashboard-card">
-            <p className="eyebrow">Users</p>
-            <h3>Member growth</h3>
-            <div className="stats-row">
-              <strong>318</strong>
-              <span>Active learners</span>
-            </div>
-          </article>
-        </section>
-
         <section className="admin-detail-grid">
-          <section className="admin-summary-card">
-            <p className="eyebrow">Admin content</p>
-            <h3>{adminSummary.title}</h3>
-            <p>{adminSummary.description}</p>
-            <ul className="admin-email-list">
-              {adminEmails.map((email) => (
-                <li key={email}>{email}</li>
-              ))}
-            </ul>
-          </section>
-
           <section className="question-list-panel">
             <h2>{currentSet ? 'Personal sample question set' : 'Prepared sample questions'}</h2>
             <ul>
