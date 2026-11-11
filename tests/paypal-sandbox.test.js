@@ -59,6 +59,9 @@ test('bonus plans require a one-time $100 fee and the correct base billing inter
   const pro = expectedPlan('Pro-Bonus', env)
   assert.equal(pro.amount, '436.00')
   assert.equal(pro.interval, 'YEAR')
+  const proDisplay = pricePlans.find((item) => item.name === 'Pro-Bonus')
+  assert.equal(proDisplay.firstPayment, '$536.00')
+  assert.equal(Number(proDisplay.firstPayment.slice(1)), Number(pro.amount) + Number(pro.setupFee))
   const proPlan = {
     ...bonusPlan,
     id: pro.id,

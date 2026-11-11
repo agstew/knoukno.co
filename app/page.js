@@ -235,7 +235,7 @@ export default function HomePage() {
                   <strong className={plan.firstPayment ? styles.paymentDetail : undefined}>{plan.firstPayment || plan.price}</strong>
                 </div>
                 {plan.firstPayment
-                  ? <p className={styles.paymentDetail}>Includes {plan.setupFee} one-time bonus charge; then {plan.price} per month.</p>
+                  ? <p className={styles.paymentDetail}>Includes {plan.setupFee} one-time bonus charge; then {plan.price} per {plan.period === 'Yearly' ? 'year' : 'month'}.</p>
                   : plan.setupFee && <p className={styles.paymentDetail}>Plus {plan.setupFee} one-time bonus charge</p>}
 
                 <p className="question-caption">{plan.questions}</p>
@@ -250,7 +250,7 @@ export default function HomePage() {
                 {plan.name === 'Free'
                   ? <Link href="/register" className={styles.planButton}>Register for sample access</Link>
                   : <>
-                    <button type="button" className={styles.planButton} disabled aria-label={`${plan.name}: checkout unavailable`}>Buy now &ndash; unavailable</button>
+                    <button type="button" className={styles.planButton} disabled aria-label={`Purchase the ${plan.name} tier: checkout unavailable`}>Purchase the {plan.name} tier</button>
                   </>}
               </article>
             ))}
