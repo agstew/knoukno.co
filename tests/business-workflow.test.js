@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
-import { gradeAnswer, gradeSummary, questionAt, rankingDraft, reorderAnswers, saveAnswer, validateTitle } from '../lib/business-workflow.js'
+import { gradeAnswer, gradeSummary, questionAt, questionPageIndices, rankingDraft, reorderAnswers, saveAnswer, validateTitle } from '../lib/business-workflow.js'
 import { aiExamples, aiQuestions } from '../lib/site-data.js'
 
 test('titles and answers are validated and saved by question', () => {
@@ -59,4 +59,14 @@ test('every prepared question has a corresponding example', () => {
     assert.ok(questionAt(index).example?.trim(), `Missing example for question ${index + 1}`)
   }
   assert.equal(questionAt(aiQuestions.length).example, null)
+})
+
+test('question pagination shows groups of five including a partial final group', () => {
+  assert.deepEqual(questionPageIndices(0, 12), [0, 1, 2, 3, 4])
+  assert.deepEqual(questionPageIndices(5, 12), [5, 6, 7, 8, 9])
+  assert.deepEqual(questionPageIndices(11, 12), [10, 11])
+  assert.deepEqual(questionPageIndices(0, 1), [0])
+  assert.throws(() => questionPageIndices(12, 12), /Invalid/)
+  assert.throws(() => questionPageIndices(0, 0), /Invalid/)
+  assert.throws(() => questionPageIndices(0, 12, 0), /Invalid/)
 })

@@ -901,8 +901,14 @@ input {
 
 .business-pagination {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   margin-top: 16px;
+}
+
+.business-pagination button[aria-current="page"] {
+  outline: 3px solid #d4a948;
+  outline-offset: 2px;
 }
 
 .business-message {

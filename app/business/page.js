@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import { clearSession, getSession } from '../../lib/auth-client'
-import { gradePoints, gradeSummary, questionAt, rankingDraft } from '../../lib/business-workflow'
+import { gradePoints, gradeSummary, questionAt, questionPageIndices, rankingDraft } from '../../lib/business-workflow'
 import { aiQuestions } from '../../lib/site-data'
 
 export default function BusinessPage() {
@@ -207,10 +207,15 @@ export default function BusinessPage() {
                 <textarea id="answer" value={answerText} onChange={(event) => setAnswerText(event.target.value)} maxLength={10000} required rows={5} />
                 <button type="submit" disabled={busy}>Save answer</button>
               </form>
-              <div className="business-pagination">
+              <nav className="business-pagination" aria-label="Question pagination">
                 <button type="button" disabled={busy || questionIndex === 0} onClick={() => { setQuestionIndex((current) => current - 1); setNotice('') }}>Previous</button>
+                {questionPageIndices(questionIndex, aiQuestions.length).map((index) => (
+                  <button type="button" key={index} disabled={busy} aria-label={`Question ${index + 1}`}
+                    aria-current={index === questionIndex ? 'page' : undefined}
+                    onClick={() => { setQuestionIndex(index); setNotice('') }}>{index + 1}</button>
+                ))}
                 <button type="button" disabled={busy || questionIndex === aiQuestions.length - 1} onClick={() => { setQuestionIndex((current) => current + 1); setNotice('') }}>Next</button>
-              </div>
+              </nav>
               <p>Save your answer before changing questions.</p>
             </>}
             {view === 'grade' && <>
