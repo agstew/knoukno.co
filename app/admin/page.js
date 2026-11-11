@@ -75,11 +75,12 @@ export default function AdminPage() {
           <p className="lead">Welcome back, {user.fullName}. This dashboard manages question generation, summaries, and email updates.</p>
 
           <div className="admin-controls">
-            <button type="button">Generate question set</button>
-            <button type="button">Print summary</button>
-            <button type="button">Save all</button>
-            <button type="button">Delete</button>
+            <button type="button" disabled>Generate question set</button>
+            <button type="button" onClick={() => window.print()}>Print summary</button>
+            <button type="button" disabled>Save all</button>
+            <button type="button" disabled>Delete</button>
           </div>
+          <p>Question generation, saving, and deletion are not yet available.</p>
         </section>
 
         <section className="dashboard-grid">
@@ -135,6 +136,13 @@ export default function AdminPage() {
           </section>
         </section>
       </main>
+      <section className="admin-print-report" aria-label="Prepared question summary">
+        <h1>Prepared business questions</h1>
+        <p>{aiQuestions.length} sample questions</p>
+        <ol>
+          {aiQuestions.map((question) => <li key={question}>{question}</li>)}
+        </ol>
+      </section>
     </div>
   )
 }
